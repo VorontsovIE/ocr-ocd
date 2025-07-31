@@ -1,0 +1,66 @@
+{
+  "page_number": 107,
+  "tasks": [
+    {
+      "page_number": 107,
+      "task_number": "4",
+      "task_text": "Поставь знак > , < или = : 8 ○ 10",
+      "has_image": false,
+      "confidence_score": 0.93,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "4",
+        "text_cleaned": true,
+        "api_task_type": "comparison",
+        "api_page_section": "bottom",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:17:04.056953"
+    },
+    {
+      "page_number": 107,
+      "task_number": "4",
+      "task_text": "Поставь знак > , < или = : 8 ○ 10",
+      "has_image": false,
+      "confidence_score": 0.83,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "4",
+        "text_cleaned": true,
+        "api_task_type": "comparison",
+        "api_page_section": "bottom",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:17:04.059093"
+    },
+    {
+      "page_number": 107,
+      "task_number": "3",
+      "task_text": "Расставь по порядку: 2, 8, 9",
+      "has_image": false,
+      "confidence_score": 0.86,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "3",
+        "text_cleaned": false,
+        "api_task_type": "comparison",
+        "api_page_section": "top",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:17:04.060487"
+    }
+  ],
+  "processing_time": 2.136029005050659,
+  "image_info": {
+    "size_bytes": 2526617,
+    "format": "PNG",
+    "page_number": 107
+  },
+  "api_method": "mock",
+  "task_count": 3,
+  "processed_at": "2025-07-31T14:17:04.066588",
+  "storage_version": "2.0"
+}

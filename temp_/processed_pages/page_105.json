@@ -1,0 +1,66 @@
+{
+  "page_number": 105,
+  "tasks": [
+    {
+      "page_number": 105,
+      "task_number": "2",
+      "task_text": "Какое число больше: 2 или 3?",
+      "has_image": false,
+      "confidence_score": 0.85,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "2",
+        "text_cleaned": false,
+        "api_task_type": "comparison",
+        "api_page_section": "top",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:16:59.637446"
+    },
+    {
+      "page_number": 105,
+      "task_number": "5",
+      "task_text": "Сравни числа 8 и 6 (поставь знак",
+      "has_image": false,
+      "confidence_score": 0.81,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "5",
+        "text_cleaned": true,
+        "api_task_type": "comparison",
+        "api_page_section": "bottom",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:16:59.638836"
+    },
+    {
+      "page_number": 105,
+      "task_number": "4",
+      "task_text": "Что больше: 10 или 4?",
+      "has_image": false,
+      "confidence_score": 0.84,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "4",
+        "text_cleaned": false,
+        "api_task_type": "comparison",
+        "api_page_section": "bottom",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:16:59.639529"
+    }
+  ],
+  "processing_time": 2.1712112426757812,
+  "image_info": {
+    "size_bytes": 2556806,
+    "format": "PNG",
+    "page_number": 105
+  },
+  "api_method": "mock",
+  "task_count": 3,
+  "processed_at": "2025-07-31T14:16:59.643365",
+  "storage_version": "2.0"
+}

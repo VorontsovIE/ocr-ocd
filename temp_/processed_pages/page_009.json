@@ -1,0 +1,32 @@
+{
+  "page_number": 9,
+  "tasks": [
+    {
+      "page_number": 9,
+      "task_number": "3",
+      "task_text": "Сосчитай сколько 3 на рисунке",
+      "has_image": true,
+      "confidence_score": 0.86,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "3",
+        "text_cleaned": false,
+        "api_task_type": "counting",
+        "api_page_section": "middle",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:13:21.482884"
+    }
+  ],
+  "processing_time": 1.8066990375518799,
+  "image_info": {
+    "size_bytes": 2633310,
+    "format": "PNG",
+    "page_number": 9
+  },
+  "api_method": "mock",
+  "task_count": 1,
+  "processed_at": "2025-07-31T14:13:21.484279",
+  "storage_version": "2.0"
+}

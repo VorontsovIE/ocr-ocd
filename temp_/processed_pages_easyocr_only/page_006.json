@@ -1,0 +1,37 @@
+{
+  "page_number": 6,
+  "tasks": [
+    {
+      "task_number": "easyocr-1",
+      "task_text": "Где расположен флажок: вверху или",
+      "has_image": false,
+      "confidence_score": 0.6,
+      "extraction_method": "context_analysis",
+      "page_ocr_confidence": 100.0,
+      "page_word_count": 14,
+      "extraction_source": "easyocr_analysis"
+    },
+    {
+      "task_number": "easyocr-2",
+      "task_text": "Где расположены звёздочка? домик? ёлочка?",
+      "has_image": false,
+      "confidence_score": 0.6,
+      "extraction_method": "context_analysis",
+      "page_ocr_confidence": 100.0,
+      "page_word_count": 14,
+      "extraction_source": "easyocr_analysis"
+    }
+  ],
+  "processing_time": 0.31044793128967285,
+  "ocr_stats": {
+    "total_words": 14,
+    "total_lines": 5,
+    "avg_confidence": 100.0,
+    "numbers_found": []
+  },
+  "api_method": "easyocr_only",
+  "task_count": 2,
+  "full_text": "Где расположен флажок: вверху или\nслева Или\nсправа?\nвнизу?\nГде расположены звёздочка? домик? ёлочка?",
+  "processed_at": "2025-07-31T15:47:01.206351",
+  "storage_version": "2.3-easyocr-only"
+}

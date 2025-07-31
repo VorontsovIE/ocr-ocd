@@ -1,0 +1,49 @@
+{
+  "page_number": 99,
+  "tasks": [
+    {
+      "page_number": 99,
+      "task_number": "1",
+      "task_text": "Расставь по порядку: 5, 9, 7",
+      "has_image": false,
+      "confidence_score": 0.93,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "1",
+        "text_cleaned": false,
+        "api_task_type": "comparison",
+        "api_page_section": "top",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:16:44.963697"
+    },
+    {
+      "page_number": 99,
+      "task_number": "1",
+      "task_text": "Сравни числа 4 и 7 (поставь знак",
+      "has_image": false,
+      "confidence_score": 0.9,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "1",
+        "text_cleaned": true,
+        "api_task_type": "comparison",
+        "api_page_section": "middle",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:16:44.965828"
+    }
+  ],
+  "processing_time": 2.0695314407348633,
+  "image_info": {
+    "size_bytes": 2429642,
+    "format": "PNG",
+    "page_number": 99
+  },
+  "api_method": "mock",
+  "task_count": 2,
+  "processed_at": "2025-07-31T14:16:44.966734",
+  "storage_version": "2.0"
+}

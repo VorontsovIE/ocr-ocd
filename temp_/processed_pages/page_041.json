@@ -1,0 +1,66 @@
+{
+  "page_number": 41,
+  "tasks": [
+    {
+      "page_number": 41,
+      "task_number": "4",
+      "task_text": "Реши пример: 3 + 3",
+      "has_image": false,
+      "confidence_score": 0.79,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "4",
+        "text_cleaned": true,
+        "api_task_type": "addition",
+        "api_page_section": "middle",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:14:28.220982"
+    },
+    {
+      "page_number": 41,
+      "task_number": "5",
+      "task_text": "Реши пример: 1 + 3",
+      "has_image": false,
+      "confidence_score": 0.91,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "5",
+        "text_cleaned": true,
+        "api_task_type": "addition",
+        "api_page_section": "bottom",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:14:28.224590"
+    },
+    {
+      "page_number": 41,
+      "task_number": "2",
+      "task_text": "Сколько будет 3 да 4?",
+      "has_image": false,
+      "confidence_score": 0.86,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "2",
+        "text_cleaned": false,
+        "api_task_type": "addition",
+        "api_page_section": "middle",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:14:28.225808"
+    }
+  ],
+  "processing_time": 2.38700008392334,
+  "image_info": {
+    "size_bytes": 2511865,
+    "format": "PNG",
+    "page_number": 41
+  },
+  "api_method": "mock",
+  "task_count": 3,
+  "processed_at": "2025-07-31T14:14:28.228060",
+  "storage_version": "2.0"
+}

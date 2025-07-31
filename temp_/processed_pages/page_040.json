@@ -1,0 +1,32 @@
+{
+  "page_number": 40,
+  "tasks": [
+    {
+      "page_number": 40,
+      "task_number": "6",
+      "task_text": "К 2 прибавить 3 получится ?",
+      "has_image": false,
+      "confidence_score": 0.81,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "6",
+        "text_cleaned": false,
+        "api_task_type": "addition",
+        "api_page_section": "top",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:14:25.732229"
+    }
+  ],
+  "processing_time": 2.0345818996429443,
+  "image_info": {
+    "size_bytes": 2489707,
+    "format": "PNG",
+    "page_number": 40
+  },
+  "api_method": "mock",
+  "task_count": 1,
+  "processed_at": "2025-07-31T14:14:25.734464",
+  "storage_version": "2.0"
+}

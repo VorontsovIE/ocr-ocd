@@ -1,0 +1,32 @@
+{
+  "page_number": 34,
+  "tasks": [
+    {
+      "page_number": 34,
+      "task_number": "6",
+      "task_text": "Реши пример: 3 + 4",
+      "has_image": false,
+      "confidence_score": 0.82,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "6",
+        "text_cleaned": true,
+        "api_task_type": "addition",
+        "api_page_section": "bottom",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:14:13.217358"
+    }
+  ],
+  "processing_time": 2.4092135429382324,
+  "image_info": {
+    "size_bytes": 2518278,
+    "format": "PNG",
+    "page_number": 34
+  },
+  "api_method": "mock",
+  "task_count": 1,
+  "processed_at": "2025-07-31T14:14:13.219201",
+  "storage_version": "2.0"
+}

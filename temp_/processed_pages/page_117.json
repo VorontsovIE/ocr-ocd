@@ -1,0 +1,66 @@
+{
+  "page_number": 117,
+  "tasks": [
+    {
+      "page_number": 117,
+      "task_number": "4",
+      "task_text": "В вазе лежало 5 конфет. Положили ещё 6. Сколько конфет стало в вазе?",
+      "has_image": true,
+      "confidence_score": 0.97,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "4",
+        "text_cleaned": false,
+        "api_task_type": "word_problems",
+        "api_page_section": "bottom",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:17:26.295667"
+    },
+    {
+      "page_number": 117,
+      "task_number": "3",
+      "task_text": "Мама испекла 11 пирожков. За обедом съели 4. Сколько пирожков осталось?",
+      "has_image": false,
+      "confidence_score": 0.87,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "3",
+        "text_cleaned": false,
+        "api_task_type": "word_problems",
+        "api_page_section": "middle",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:17:26.297689"
+    },
+    {
+      "page_number": 117,
+      "task_number": "6",
+      "task_text": "Мама испекла 14 пирожков. За обедом съели 6. Сколько пирожков осталось?",
+      "has_image": true,
+      "confidence_score": 0.87,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "6",
+        "text_cleaned": false,
+        "api_task_type": "word_problems",
+        "api_page_section": "bottom",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:17:26.302095"
+    }
+  ],
+  "processing_time": 2.034451961517334,
+  "image_info": {
+    "size_bytes": 2705893,
+    "format": "PNG",
+    "page_number": 117
+  },
+  "api_method": "mock",
+  "task_count": 3,
+  "processed_at": "2025-07-31T14:17:26.306221",
+  "storage_version": "2.0"
+}

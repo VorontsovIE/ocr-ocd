@@ -1,0 +1,32 @@
+{
+  "page_number": 134,
+  "tasks": [
+    {
+      "page_number": 134,
+      "task_number": "6",
+      "task_text": "Начерти отрезок длиной 3 см",
+      "has_image": true,
+      "confidence_score": 0.84,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "6",
+        "text_cleaned": false,
+        "api_task_type": "geometry",
+        "api_page_section": "middle",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:18:06.169931"
+    }
+  ],
+  "processing_time": 2.131929636001587,
+  "image_info": {
+    "size_bytes": 2894295,
+    "format": "PNG",
+    "page_number": 134
+  },
+  "api_method": "mock",
+  "task_count": 1,
+  "processed_at": "2025-07-31T14:18:06.172302",
+  "storage_version": "2.0"
+}

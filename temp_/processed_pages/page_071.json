@@ -1,0 +1,66 @@
+{
+  "page_number": 71,
+  "tasks": [
+    {
+      "page_number": 71,
+      "task_number": "5",
+      "task_text": "От 3 отнять 2 получится ?",
+      "has_image": false,
+      "confidence_score": 0.78,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "5",
+        "text_cleaned": false,
+        "api_task_type": "subtraction",
+        "api_page_section": "top",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:15:39.195185"
+    },
+    {
+      "page_number": 71,
+      "task_number": "4",
+      "task_text": "Реши пример: 4 - 1",
+      "has_image": false,
+      "confidence_score": 0.89,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "4",
+        "text_cleaned": true,
+        "api_task_type": "subtraction",
+        "api_page_section": "middle",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:15:39.196750"
+    },
+    {
+      "page_number": 71,
+      "task_number": "unknown-2",
+      "task_text": "От 8 отнять 1 получится ?",
+      "has_image": false,
+      "confidence_score": 0.92,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "unknown-2",
+        "text_cleaned": false,
+        "api_task_type": "subtraction",
+        "api_page_section": "top",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:15:39.200273"
+    }
+  ],
+  "processing_time": 2.3466851711273193,
+  "image_info": {
+    "size_bytes": 2550637,
+    "format": "PNG",
+    "page_number": 71
+  },
+  "api_method": "mock",
+  "task_count": 3,
+  "processed_at": "2025-07-31T14:15:39.203368",
+  "storage_version": "2.0"
+}

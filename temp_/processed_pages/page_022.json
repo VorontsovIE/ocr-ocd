@@ -1,0 +1,83 @@
+{
+  "page_number": 22,
+  "tasks": [
+    {
+      "page_number": 22,
+      "task_number": "2",
+      "task_text": "Сосчитай сколько 5 на рисунке",
+      "has_image": false,
+      "confidence_score": 0.81,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "2",
+        "text_cleaned": false,
+        "api_task_type": "counting",
+        "api_page_section": "top",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:13:48.445428"
+    },
+    {
+      "page_number": 22,
+      "task_number": "2",
+      "task_text": "Покажи число 3 на счётных палочках",
+      "has_image": true,
+      "confidence_score": 0.85,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "2",
+        "text_cleaned": false,
+        "api_task_type": "counting",
+        "api_page_section": "middle",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:13:48.445869"
+    },
+    {
+      "page_number": 22,
+      "task_number": "3",
+      "task_text": "Сосчитай сколько 5 на рисунке",
+      "has_image": false,
+      "confidence_score": 0.9,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "3",
+        "text_cleaned": false,
+        "api_task_type": "counting",
+        "api_page_section": "top",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:13:48.446504"
+    },
+    {
+      "page_number": 22,
+      "task_number": "2",
+      "task_text": "Покажи число 2 на счётных палочках",
+      "has_image": true,
+      "confidence_score": 0.96,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "2",
+        "text_cleaned": false,
+        "api_task_type": "counting",
+        "api_page_section": "top",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:13:48.447211"
+    }
+  ],
+  "processing_time": 1.786428451538086,
+  "image_info": {
+    "size_bytes": 2906134,
+    "format": "PNG",
+    "page_number": 22
+  },
+  "api_method": "mock",
+  "task_count": 4,
+  "processed_at": "2025-07-31T14:13:48.448092",
+  "storage_version": "2.0"
+}

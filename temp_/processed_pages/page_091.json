@@ -1,0 +1,66 @@
+{
+  "page_number": 91,
+  "tasks": [
+    {
+      "page_number": 91,
+      "task_number": "1",
+      "task_text": "Что больше: 1 или 10?",
+      "has_image": false,
+      "confidence_score": 0.82,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "1",
+        "text_cleaned": false,
+        "api_task_type": "comparison",
+        "api_page_section": "top",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:16:26.838564"
+    },
+    {
+      "page_number": 91,
+      "task_number": "4",
+      "task_text": "Какое число больше: 8 или 7?",
+      "has_image": false,
+      "confidence_score": 0.89,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "4",
+        "text_cleaned": false,
+        "api_task_type": "comparison",
+        "api_page_section": "middle",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:16:26.841112"
+    },
+    {
+      "page_number": 91,
+      "task_number": "5",
+      "task_text": "Поставь знак > , < или = : 10 ○ 2",
+      "has_image": false,
+      "confidence_score": 0.84,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "5",
+        "text_cleaned": true,
+        "api_task_type": "comparison",
+        "api_page_section": "middle",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:16:26.844450"
+    }
+  ],
+  "processing_time": 2.1967098712921143,
+  "image_info": {
+    "size_bytes": 2644634,
+    "format": "PNG",
+    "page_number": 91
+  },
+  "api_method": "mock",
+  "task_count": 3,
+  "processed_at": "2025-07-31T14:16:26.845835",
+  "storage_version": "2.0"
+}

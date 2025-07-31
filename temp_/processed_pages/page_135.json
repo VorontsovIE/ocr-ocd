@@ -1,0 +1,49 @@
+{
+  "page_number": 135,
+  "tasks": [
+    {
+      "page_number": 135,
+      "task_number": "5",
+      "task_text": "Нарисуй квадрат со стороной 5 клетки",
+      "has_image": true,
+      "confidence_score": 0.87,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "5",
+        "text_cleaned": false,
+        "api_task_type": "geometry",
+        "api_page_section": "bottom",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:18:08.472540"
+    },
+    {
+      "page_number": 135,
+      "task_number": "3",
+      "task_text": "Начерти отрезок длиной 3 см",
+      "has_image": true,
+      "confidence_score": 0.88,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "3",
+        "text_cleaned": false,
+        "api_task_type": "geometry",
+        "api_page_section": "middle",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:18:08.476685"
+    }
+  ],
+  "processing_time": 2.2059719562530518,
+  "image_info": {
+    "size_bytes": 2893349,
+    "format": "PNG",
+    "page_number": 135
+  },
+  "api_method": "mock",
+  "task_count": 2,
+  "processed_at": "2025-07-31T14:18:08.479742",
+  "storage_version": "2.0"
+}

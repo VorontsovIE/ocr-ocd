@@ -1,0 +1,83 @@
+{
+  "page_number": 138,
+  "tasks": [
+    {
+      "page_number": 138,
+      "task_number": "4",
+      "task_text": "Сколько сторон у четырёхугольника?",
+      "has_image": false,
+      "confidence_score": 0.94,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "4",
+        "text_cleaned": false,
+        "api_task_type": "geometry",
+        "api_page_section": "middle",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:18:15.491775"
+    },
+    {
+      "page_number": 138,
+      "task_number": "2",
+      "task_text": "Сколько сторон у четырёхугольника?",
+      "has_image": true,
+      "confidence_score": 0.87,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "2",
+        "text_cleaned": false,
+        "api_task_type": "geometry",
+        "api_page_section": "bottom",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:18:15.494727"
+    },
+    {
+      "page_number": 138,
+      "task_number": "2",
+      "task_text": "Сколько углов у треугольника?",
+      "has_image": true,
+      "confidence_score": 0.94,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "2",
+        "text_cleaned": false,
+        "api_task_type": "geometry",
+        "api_page_section": "top",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:18:15.499267"
+    },
+    {
+      "page_number": 138,
+      "task_number": "6",
+      "task_text": "Нарисуй квадрат со стороной 3 клетки",
+      "has_image": true,
+      "confidence_score": 0.8,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "6",
+        "text_cleaned": false,
+        "api_task_type": "geometry",
+        "api_page_section": "top",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:18:15.502860"
+    }
+  ],
+  "processing_time": 2.161055088043213,
+  "image_info": {
+    "size_bytes": 2914000,
+    "format": "PNG",
+    "page_number": 138
+  },
+  "api_method": "mock",
+  "task_count": 4,
+  "processed_at": "2025-07-31T14:18:15.506756",
+  "storage_version": "2.0"
+}

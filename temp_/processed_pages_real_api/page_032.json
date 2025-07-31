@@ -1,0 +1,64 @@
+{
+  "page_number": 32,
+  "tasks": [
+    {
+      "page_number": 32,
+      "task_number": "unknown-1",
+      "task_text": "json { \"page_number\": 32, \"tasks\": [ { \"task_number\": \"14\", \"task_text\": \"Мама принесла с огорода 4 корзины с морковью, а Таня 2 корзины. Сколько всего корзин с морковью принесл...",
+      "has_image": false,
+      "confidence_score": null,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "unknown-1",
+        "text_cleaned": true
+      },
+      "created_at": "2025-07-31T15:29:16.110006"
+    }
+  ],
+  "processing_time": 33.07153272628784,
+  "image_info": {
+    "size_bytes": 1770277,
+    "format": "PNG",
+    "page_number": 32
+  },
+  "api_method": "real_gpt4_vision",
+  "task_count": 1,
+  "api_response": {
+    "content": "```json\n{\n  \"page_number\": 32,\n  \"tasks\": [\n    {\n      \"task_number\": \"14\",\n      \"task_text\": \"Мама принесла с огорода 4 корзины с морковью, а Таня 2 корзины. Сколько всего корзин с морковью принесли они?\",\n      \"has_image\": false\n    },\n    {\n      \"task_number\": \"15\",\n      \"task_text\": \"Митя помог маме убрать картофель с огорода. Мама собрала 8 мешков, а Митя 2 мешка. Сколько мешков картофеля собрали мама и Митя вместе?\",\n      \"has_image\": false\n    },\n    {\n      \"task_number\": \"16\",\n      \"task_text\": \"4+2 2+2 6-1 6+2\\n2+2 6+2 9-1 8-1\\n6+2 8+2 5-1 8+2\\n8+2 4+2 7-1 10-1\",\n      \"has_image\": false\n    },\n    {\n      \"task_number\": \"17\",\n      \"task_text\": \"4-1-1 8-1-1\\n6-1-1 10-1-1\\n4-2= 6-2= 8-2= 10-2=\\n4-1-1 6-1-1 8-1-1 10-1-1\",\n      \"has_image\": true\n    },\n    {\n      \"task_number\": \"18\",\n      \"task_text\": \"У Володи было 6 гвоздей. 2 гвоздя он взял для починки санок. Сколько гвоздей осталось у Володи?\",\n      \"has_image\": false\n    },\n    {\n      \"task_number\": \"19\",\n      \"task_text\": \"В сарае было 10 досок. Из 2 досок папа сделал сыну полочки для книг. Сколько досок осталось в сарае?\",\n      \"has_image\": false\n    },\n    {\n      \"task_number\": \"20\",\n      \"task_text\": \"2+2 10-2 2+2 4+2\\n4+2 8-2 4-2 6-2\\n6+2 6-2 6+2 8+2\\n8+2 4-2 8-2 10-2\",\n      \"has_image\": false\n    },\n    {\n      \"task_number\": \"21\",\n      \"task_text\": \"На полке было 8 книг. Мама поставила на полку ещё 2 книги. Сколько книг стало на полке?\",\n      \"has_image\": false\n    },\n    {\n      \"task_number\": \"22\",\n      \"task_text\": \"На столе лежало 8 книг. Митя взял со стола 2 книги. Сколько книг осталось на столе?\",\n      \"has_image\": false\n    }\n  ]\n}\n```",
+    "parsed_data": {
+      "page_number": 32,
+      "tasks": [
+        {
+          "task_number": "unknown-1",
+          "task_text": "```json\n{\n  \"page_number\": 32,\n  \"tasks\": [\n    {\n      \"task_number\": \"14\",\n      \"task_text\": \"Мама принесла с огорода 4 корзины с морковью, а Таня 2 корзины. Сколько всего корзин с морковью принесл...",
+          "has_image": false
+        }
+      ]
+    },
+    "json_valid": false,
+    "usage": {
+      "completion_tokens": 652,
+      "prompt_tokens": 1235,
+      "total_tokens": 1887,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    },
+    "model": "gpt-4o-2024-08-06",
+    "processing_time": 32.115129709243774,
+    "image_info": {
+      "size_bytes": 1770277
+    },
+    "prompt_type": "real_api"
+  },
+  "processed_at": "2025-07-31T15:29:16.110484",
+  "storage_version": "2.1"
+}

@@ -1,0 +1,66 @@
+{
+  "page_number": 2,
+  "tasks": [
+    {
+      "page_number": 2,
+      "task_number": "3",
+      "task_text": "Сколько 4 ты видишь?",
+      "has_image": true,
+      "confidence_score": 0.81,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "3",
+        "text_cleaned": false,
+        "api_task_type": "counting",
+        "api_page_section": "top",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:11:25.442506"
+    },
+    {
+      "page_number": 2,
+      "task_number": "2",
+      "task_text": "Сосчитай сколько 2 на рисунке",
+      "has_image": true,
+      "confidence_score": 0.81,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "2",
+        "text_cleaned": false,
+        "api_task_type": "counting",
+        "api_page_section": "bottom",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:11:25.446095"
+    },
+    {
+      "page_number": 2,
+      "task_number": "3",
+      "task_text": "Сосчитай сколько 4 на рисунке",
+      "has_image": false,
+      "confidence_score": 0.79,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "3",
+        "text_cleaned": false,
+        "api_task_type": "counting",
+        "api_page_section": "middle",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:11:25.449098"
+    }
+  ],
+  "processing_time": 2.741197347640991,
+  "image_info": {
+    "size_bytes": 2784276,
+    "format": "PNG",
+    "page_number": 2
+  },
+  "api_method": "mock",
+  "task_count": 3,
+  "processed_at": "2025-07-31T14:11:25.454428",
+  "storage_version": "2.0"
+}

@@ -1,0 +1,49 @@
+{
+  "page_number": 87,
+  "tasks": [
+    {
+      "page_number": 87,
+      "task_number": "1",
+      "task_text": "На сколько 6 больше чем 3?",
+      "has_image": false,
+      "confidence_score": 0.83,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "1",
+        "text_cleaned": false,
+        "api_task_type": "subtraction",
+        "api_page_section": "bottom",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:16:17.576976"
+    },
+    {
+      "page_number": 87,
+      "task_number": "6",
+      "task_text": "Сколько останется если от 4 убрать 1?",
+      "has_image": false,
+      "confidence_score": 0.84,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "6",
+        "text_cleaned": false,
+        "api_task_type": "subtraction",
+        "api_page_section": "bottom",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:16:17.577353"
+    }
+  ],
+  "processing_time": 2.035252332687378,
+  "image_info": {
+    "size_bytes": 2597535,
+    "format": "PNG",
+    "page_number": 87
+  },
+  "api_method": "mock",
+  "task_count": 2,
+  "processed_at": "2025-07-31T14:16:17.578094",
+  "storage_version": "2.0"
+}

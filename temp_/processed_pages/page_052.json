@@ -1,0 +1,83 @@
+{
+  "page_number": 52,
+  "tasks": [
+    {
+      "page_number": 52,
+      "task_number": "3",
+      "task_text": "Сколько будет 4 да 3?",
+      "has_image": false,
+      "confidence_score": 0.94,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "3",
+        "text_cleaned": false,
+        "api_task_type": "addition",
+        "api_page_section": "middle",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:14:52.391522"
+    },
+    {
+      "page_number": 52,
+      "task_number": "4",
+      "task_text": "К 2 прибавить 2 получится ?",
+      "has_image": false,
+      "confidence_score": 0.94,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "4",
+        "text_cleaned": false,
+        "api_task_type": "addition",
+        "api_page_section": "top",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:14:52.393900"
+    },
+    {
+      "page_number": 52,
+      "task_number": "6",
+      "task_text": "Сколько будет 5 да 3?",
+      "has_image": false,
+      "confidence_score": 0.8,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "6",
+        "text_cleaned": false,
+        "api_task_type": "addition",
+        "api_page_section": "middle",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:14:52.396454"
+    },
+    {
+      "page_number": 52,
+      "task_number": "1",
+      "task_text": "Сколько будет 5 да 3?",
+      "has_image": false,
+      "confidence_score": 0.86,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "1",
+        "text_cleaned": false,
+        "api_task_type": "addition",
+        "api_page_section": "top",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:14:52.397553"
+    }
+  ],
+  "processing_time": 2.0782618522644043,
+  "image_info": {
+    "size_bytes": 2839851,
+    "format": "PNG",
+    "page_number": 52
+  },
+  "api_method": "mock",
+  "task_count": 4,
+  "processed_at": "2025-07-31T14:14:52.401451",
+  "storage_version": "2.0"
+}

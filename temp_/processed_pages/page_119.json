@@ -1,0 +1,66 @@
+{
+  "page_number": 119,
+  "tasks": [
+    {
+      "page_number": 119,
+      "task_number": "6",
+      "task_text": "На ветке сидело 13 птичек. 4 улетели. Сколько птичек осталось?",
+      "has_image": false,
+      "confidence_score": 0.81,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "6",
+        "text_cleaned": false,
+        "api_task_type": "word_problems",
+        "api_page_section": "bottom",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:17:30.880991"
+    },
+    {
+      "page_number": 119,
+      "task_number": "2",
+      "task_text": "Мама испекла 15 пирожков. За обедом съели 7. Сколько пирожков осталось?",
+      "has_image": false,
+      "confidence_score": 0.88,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "2",
+        "text_cleaned": false,
+        "api_task_type": "word_problems",
+        "api_page_section": "top",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:17:30.882084"
+    },
+    {
+      "page_number": 119,
+      "task_number": "4",
+      "task_text": "В классе 7 мальчиков и 5 девочек. Сколько всего детей в классе?",
+      "has_image": false,
+      "confidence_score": 0.91,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "4",
+        "text_cleaned": false,
+        "api_task_type": "word_problems",
+        "api_page_section": "top",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:17:30.882679"
+    }
+  ],
+  "processing_time": 2.074004888534546,
+  "image_info": {
+    "size_bytes": 2810829,
+    "format": "PNG",
+    "page_number": 119
+  },
+  "api_method": "mock",
+  "task_count": 3,
+  "processed_at": "2025-07-31T14:17:30.883383",
+  "storage_version": "2.0"
+}

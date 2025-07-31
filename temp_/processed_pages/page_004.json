@@ -1,0 +1,32 @@
+{
+  "page_number": 4,
+  "tasks": [
+    {
+      "page_number": 4,
+      "task_number": "2",
+      "task_text": "Покажи число 2 на счётных палочках",
+      "has_image": true,
+      "confidence_score": 0.83,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "2",
+        "text_cleaned": false,
+        "api_task_type": "counting",
+        "api_page_section": "top",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:12:37.092146"
+    }
+  ],
+  "processing_time": 2.86198091506958,
+  "image_info": {
+    "size_bytes": 3394907,
+    "format": "PNG",
+    "page_number": 4
+  },
+  "api_method": "mock",
+  "task_count": 1,
+  "processed_at": "2025-07-31T14:12:37.096482",
+  "storage_version": "2.0"
+}

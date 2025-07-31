@@ -1,0 +1,83 @@
+{
+  "page_number": 31,
+  "tasks": [
+    {
+      "page_number": 31,
+      "task_number": "unknown-3",
+      "task_text": "3 + 2 = ?",
+      "has_image": false,
+      "confidence_score": 0.92,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "unknown-3",
+        "text_cleaned": false,
+        "api_task_type": "addition",
+        "api_page_section": "top",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:14:06.580038"
+    },
+    {
+      "page_number": 31,
+      "task_number": "2",
+      "task_text": "5 + 4 = ?",
+      "has_image": false,
+      "confidence_score": 0.8,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "2",
+        "text_cleaned": false,
+        "api_task_type": "addition",
+        "api_page_section": "bottom",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:14:06.580511"
+    },
+    {
+      "page_number": 31,
+      "task_number": "2",
+      "task_text": "Найди сумму чисел 4 и 1",
+      "has_image": false,
+      "confidence_score": 0.97,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "2",
+        "text_cleaned": false,
+        "api_task_type": "addition",
+        "api_page_section": "middle",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:14:06.580976"
+    },
+    {
+      "page_number": 31,
+      "task_number": "4",
+      "task_text": "Найди сумму чисел 4 и 1",
+      "has_image": false,
+      "confidence_score": 0.81,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "4",
+        "text_cleaned": false,
+        "api_task_type": "addition",
+        "api_page_section": "top",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:14:06.587620"
+    }
+  ],
+  "processing_time": 1.9775021076202393,
+  "image_info": {
+    "size_bytes": 2332174,
+    "format": "PNG",
+    "page_number": 31
+  },
+  "api_method": "mock",
+  "task_count": 4,
+  "processed_at": "2025-07-31T14:14:06.597265",
+  "storage_version": "2.0"
+}

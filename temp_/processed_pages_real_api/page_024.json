@@ -1,0 +1,64 @@
+{
+  "page_number": 24,
+  "tasks": [
+    {
+      "page_number": 24,
+      "task_number": "unknown-1",
+      "task_text": "json { \"page_number\": 24, \"tasks\": [ { \"task_number\": \"unknown - 1\", \"task_text\": \"Положи столько кружков, сколько ягод на ветке смородины.\", \"has_image\": true }, { ...",
+      "has_image": false,
+      "confidence_score": null,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "unknown-1",
+        "text_cleaned": true
+      },
+      "created_at": "2025-07-31T15:26:27.455606"
+    }
+  ],
+  "processing_time": 21.32919406890869,
+  "image_info": {
+    "size_bytes": 1645116,
+    "format": "PNG",
+    "page_number": 24
+  },
+  "api_method": "real_gpt4_vision",
+  "task_count": 1,
+  "api_response": {
+    "content": "```json\n{\n  \"page_number\": 24,\n  \"tasks\": [\n    {\n      \"task_number\": \"unknown-1\",\n      \"task_text\": \"Положи столько кружков, сколько ягод на ветке смородины.\",\n      \"has_image\": true\n    },\n    {\n      \"task_number\": \"unknown-2\",\n      \"task_text\": \"Сложи из палочек 2 квадрата.\",\n      \"has_image\": true\n    },\n    {\n      \"task_number\": \"unknown-3\",\n      \"task_text\": \"Положи 7 палочек и 1 палочку. Сколько стало палочек?\",\n      \"has_image\": false\n    },\n    {\n      \"task_number\": \"unknown-4\",\n      \"task_text\": \"Нарисуй 8 шаров и подпиши под рисунком 8.\",\n      \"has_image\": false\n    }\n  ]\n}\n```",
+    "parsed_data": {
+      "page_number": 24,
+      "tasks": [
+        {
+          "task_number": "unknown-1",
+          "task_text": "```json\n{\n  \"page_number\": 24,\n  \"tasks\": [\n    {\n      \"task_number\": \"unknown-1\",\n      \"task_text\": \"Положи столько кружков, сколько ягод на ветке смородины.\",\n      \"has_image\": true\n    },\n    {\n...",
+          "has_image": false
+        }
+      ]
+    },
+    "json_valid": false,
+    "usage": {
+      "completion_tokens": 192,
+      "prompt_tokens": 1235,
+      "total_tokens": 1427,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      }
+    },
+    "model": "gpt-4o-2024-08-06",
+    "processing_time": 20.470587015151978,
+    "image_info": {
+      "size_bytes": 1645116
+    },
+    "prompt_type": "real_api"
+  },
+  "processed_at": "2025-07-31T15:26:27.456166",
+  "storage_version": "2.1"
+}

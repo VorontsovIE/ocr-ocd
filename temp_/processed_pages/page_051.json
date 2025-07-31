@@ -1,0 +1,49 @@
+{
+  "page_number": 51,
+  "tasks": [
+    {
+      "page_number": 51,
+      "task_number": "1",
+      "task_text": "Найди сумму чисел 1 и 1",
+      "has_image": false,
+      "confidence_score": 0.87,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "1",
+        "text_cleaned": false,
+        "api_task_type": "addition",
+        "api_page_section": "bottom",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:14:50.217851"
+    },
+    {
+      "page_number": 51,
+      "task_number": "2",
+      "task_text": "Найди сумму чисел 5 и 2",
+      "has_image": false,
+      "confidence_score": 0.95,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "2",
+        "text_cleaned": false,
+        "api_task_type": "addition",
+        "api_page_section": "middle",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:14:50.219654"
+    }
+  ],
+  "processing_time": 2.4512510299682617,
+  "image_info": {
+    "size_bytes": 2791306,
+    "format": "PNG",
+    "page_number": 51
+  },
+  "api_method": "mock",
+  "task_count": 2,
+  "processed_at": "2025-07-31T14:14:50.221781",
+  "storage_version": "2.0"
+}

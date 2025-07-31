@@ -1,0 +1,83 @@
+{
+  "page_number": 113,
+  "tasks": [
+    {
+      "page_number": 113,
+      "task_number": "6",
+      "task_text": "На ветке сидело 5 птичек. 5 улетели. Сколько птичек осталось?",
+      "has_image": true,
+      "confidence_score": 0.83,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "6",
+        "text_cleaned": false,
+        "api_task_type": "word_problems",
+        "api_page_section": "middle",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:17:17.121365"
+    },
+    {
+      "page_number": 113,
+      "task_number": "6",
+      "task_text": "У Маши было 6 яблока. Она дала брату 4. Сколько яблок у неё осталось?",
+      "has_image": false,
+      "confidence_score": 0.81,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "6",
+        "text_cleaned": false,
+        "api_task_type": "word_problems",
+        "api_page_section": "middle",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:17:17.122403"
+    },
+    {
+      "page_number": 113,
+      "task_number": "unknown-1",
+      "task_text": "Мама испекла 11 пирожков. За обедом съели 5. Сколько пирожков осталось?",
+      "has_image": true,
+      "confidence_score": 0.93,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "unknown-1",
+        "text_cleaned": false,
+        "api_task_type": "word_problems",
+        "api_page_section": "bottom",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:17:17.123775"
+    },
+    {
+      "page_number": 113,
+      "task_number": "5",
+      "task_text": "В вазе лежало 5 конфет. Положили ещё 5. Сколько конфет стало в вазе?",
+      "has_image": false,
+      "confidence_score": 0.93,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "5",
+        "text_cleaned": false,
+        "api_task_type": "word_problems",
+        "api_page_section": "middle",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:17:17.125013"
+    }
+  ],
+  "processing_time": 2.023338794708252,
+  "image_info": {
+    "size_bytes": 2510644,
+    "format": "PNG",
+    "page_number": 113
+  },
+  "api_method": "mock",
+  "task_count": 4,
+  "processed_at": "2025-07-31T14:17:17.127011",
+  "storage_version": "2.0"
+}

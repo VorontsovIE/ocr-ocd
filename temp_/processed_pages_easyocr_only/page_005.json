@@ -1,0 +1,49 @@
+{
+  "page_number": 5,
+  "tasks": [
+    {
+      "task_number": "easyocr-1",
+      "task_text": "Покажи столько палочек; сколько нарисовано",
+      "has_image": true,
+      "confidence_score": 0.6,
+      "extraction_method": "context_analysis",
+      "page_ocr_confidence": 100.0,
+      "page_word_count": 19,
+      "extraction_source": "easyocr_analysis"
+    },
+    {
+      "task_number": "easyocr-2",
+      "task_text": "Положи столько кружков; СКОЛЬКо нарисовано",
+      "has_image": true,
+      "confidence_score": 0.6,
+      "extraction_method": "context_analysis",
+      "page_ocr_confidence": 100.0,
+      "page_word_count": 19,
+      "extraction_source": "easyocr_analysis"
+    },
+    {
+      "task_number": "easyocr-3",
+      "task_text": "Положи стОльКо кружков; СКОЛьКО нарисовано",
+      "has_image": true,
+      "confidence_score": 0.6,
+      "extraction_method": "context_analysis",
+      "page_ocr_confidence": 100.0,
+      "page_word_count": 19,
+      "extraction_source": "easyocr_analysis"
+    }
+  ],
+  "processing_time": 0.2474346160888672,
+  "ocr_stats": {
+    "total_words": 19,
+    "total_lines": 7,
+    "avg_confidence": 100.0,
+    "numbers_found": [
+      "5"
+    ]
+  },
+  "api_method": "easyocr_only",
+  "task_count": 3,
+  "full_text": "Покажи столько палочек; сколько нарисовано\nмешков:\nПоложи столько кружков; СКОЛЬКо нарисовано\nогурцов:\nПоложи стОльКо кружков; СКОЛьКО нарисовано\nпомидоров:\n5",
+  "processed_at": "2025-07-31T15:47:00.793285",
+  "storage_version": "2.3-easyocr-only"
+}

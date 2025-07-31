@@ -1,0 +1,53 @@
+{
+  "page_number": 4,
+  "tasks": [
+    {
+      "page_number": 4,
+      "task_number": "ocr-fallback-1",
+      "task_text": "OCR восстановление: Сколько детей? Сколько деревьев? Сколько лодочек? Покажи стОлько палочек; СКОЛькО нарисовано деревьев: Положи столько кружков; СкОлько нарисовано детей: шшшииики",
+      "has_image": false,
+      "confidence_score": null,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "ocr-fallback-1",
+        "text_cleaned": true,
+        "api_fallback_source": "easyocr"
+      },
+      "created_at": "2025-07-31T15:43:34.428772"
+    }
+  ],
+  "processing_time": 16.41324543952942,
+  "image_info": {
+    "size_bytes": 3394907,
+    "format": "PNG",
+    "page_number": 4
+  },
+  "api_method": "enhanced_gpt4_vision_ocr",
+  "task_count": 1,
+  "api_response": {
+    "content": "Ошибка API: Error code: 403 - {'error': {'code': 'unsupported_country_region_territory', 'message': 'Country, region, or territory not supported', 'param': None, 'type': 'request_forbidden'}}",
+    "parsed_data": {
+      "page_number": 4,
+      "tasks": [
+        {
+          "task_number": "ocr-fallback-1",
+          "task_text": "OCR восстановление: Сколько детей? Сколько деревьев?\nСколько лодочек?\nПокажи стОлько палочек; СКОЛькО нарисовано\nдеревьев:\nПоложи столько кружков; СкОлько нарисовано\nдетей:\nшшшииики",
+          "has_image": false,
+          "fallback_source": "easyocr"
+        }
+      ]
+    },
+    "json_valid": false,
+    "usage": {},
+    "model": "error",
+    "processing_time": 0,
+    "image_info": {
+      "size_bytes": 3394907
+    },
+    "prompt_type": "error_fallback"
+  },
+  "tokens_used": 0,
+  "processed_at": "2025-07-31T15:43:34.430667",
+  "storage_version": "2.2-enhanced"
+}

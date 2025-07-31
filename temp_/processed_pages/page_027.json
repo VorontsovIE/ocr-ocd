@@ -1,0 +1,66 @@
+{
+  "page_number": 27,
+  "tasks": [
+    {
+      "page_number": 27,
+      "task_number": "5",
+      "task_text": "Покажи число 5 на счётных палочках",
+      "has_image": true,
+      "confidence_score": 0.82,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "5",
+        "text_cleaned": false,
+        "api_task_type": "counting",
+        "api_page_section": "middle",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:13:58.992565"
+    },
+    {
+      "page_number": 27,
+      "task_number": "6",
+      "task_text": "Покажи число 1 на счётных палочках",
+      "has_image": false,
+      "confidence_score": 0.93,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "6",
+        "text_cleaned": false,
+        "api_task_type": "counting",
+        "api_page_section": "middle",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:13:58.997732"
+    },
+    {
+      "page_number": 27,
+      "task_number": "2",
+      "task_text": "Сколько 1 ты видишь?",
+      "has_image": false,
+      "confidence_score": 0.83,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "2",
+        "text_cleaned": false,
+        "api_task_type": "counting",
+        "api_page_section": "top",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:13:59.000048"
+    }
+  ],
+  "processing_time": 2.0138800144195557,
+  "image_info": {
+    "size_bytes": 2703260,
+    "format": "PNG",
+    "page_number": 27
+  },
+  "api_method": "mock",
+  "task_count": 3,
+  "processed_at": "2025-07-31T14:13:59.000792",
+  "storage_version": "2.0"
+}

@@ -1,0 +1,66 @@
+{
+  "page_number": 114,
+  "tasks": [
+    {
+      "page_number": 114,
+      "task_number": "3",
+      "task_text": "У Маши было 15 яблока. Она дала брату 4. Сколько яблок у неё осталось?",
+      "has_image": true,
+      "confidence_score": 0.93,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "3",
+        "text_cleaned": false,
+        "api_task_type": "word_problems",
+        "api_page_section": "middle",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:17:19.528223"
+    },
+    {
+      "page_number": 114,
+      "task_number": "6",
+      "task_text": "В классе 7 мальчиков и 3 девочек. Сколько всего детей в классе?",
+      "has_image": true,
+      "confidence_score": 0.94,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "6",
+        "text_cleaned": false,
+        "api_task_type": "word_problems",
+        "api_page_section": "bottom",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:17:19.529868"
+    },
+    {
+      "page_number": 114,
+      "task_number": "6",
+      "task_text": "В классе 5 мальчиков и 2 девочек. Сколько всего детей в классе?",
+      "has_image": false,
+      "confidence_score": 0.95,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "6",
+        "text_cleaned": false,
+        "api_task_type": "word_problems",
+        "api_page_section": "bottom",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:17:19.531746"
+    }
+  ],
+  "processing_time": 2.3021464347839355,
+  "image_info": {
+    "size_bytes": 3035489,
+    "format": "PNG",
+    "page_number": 114
+  },
+  "api_method": "mock",
+  "task_count": 3,
+  "processed_at": "2025-07-31T14:17:19.533619",
+  "storage_version": "2.0"
+}

@@ -1,0 +1,32 @@
+{
+  "page_number": 140,
+  "tasks": [
+    {
+      "page_number": 140,
+      "task_number": "3",
+      "task_text": "Нарисуй квадрат со стороной 6 клетки",
+      "has_image": false,
+      "confidence_score": 0.84,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "3",
+        "text_cleaned": false,
+        "api_task_type": "geometry",
+        "api_page_section": "middle",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:18:20.278362"
+    }
+  ],
+  "processing_time": 2.4095568656921387,
+  "image_info": {
+    "size_bytes": 3180708,
+    "format": "PNG",
+    "page_number": 140
+  },
+  "api_method": "mock",
+  "task_count": 1,
+  "processed_at": "2025-07-31T14:18:20.280479",
+  "storage_version": "2.0"
+}

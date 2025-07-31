@@ -1,0 +1,49 @@
+{
+  "page_number": 17,
+  "tasks": [
+    {
+      "page_number": 17,
+      "task_number": "6",
+      "task_text": "Обведи все цифры 4",
+      "has_image": true,
+      "confidence_score": 0.79,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "6",
+        "text_cleaned": false,
+        "api_task_type": "counting",
+        "api_page_section": "middle",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:13:37.400215"
+    },
+    {
+      "page_number": 17,
+      "task_number": "3",
+      "task_text": "Найди и раскрась 4 предмета",
+      "has_image": false,
+      "confidence_score": 0.97,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "3",
+        "text_cleaned": false,
+        "api_task_type": "counting",
+        "api_page_section": "middle",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:13:37.401347"
+    }
+  ],
+  "processing_time": 1.7304103374481201,
+  "image_info": {
+    "size_bytes": 2445584,
+    "format": "PNG",
+    "page_number": 17
+  },
+  "api_method": "mock",
+  "task_count": 2,
+  "processed_at": "2025-07-31T14:13:37.402655",
+  "storage_version": "2.0"
+}

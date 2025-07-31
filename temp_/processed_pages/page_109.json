@@ -1,0 +1,49 @@
+{
+  "page_number": 109,
+  "tasks": [
+    {
+      "page_number": 109,
+      "task_number": "2",
+      "task_text": "Сравни числа 9 и 8 (поставь знак",
+      "has_image": false,
+      "confidence_score": 0.87,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "2",
+        "text_cleaned": true,
+        "api_task_type": "comparison",
+        "api_page_section": "middle",
+        "api_difficulty": "medium"
+      },
+      "created_at": "2025-07-31T14:17:08.263570"
+    },
+    {
+      "page_number": 109,
+      "task_number": "5",
+      "task_text": "Какое число больше: 6 или 5?",
+      "has_image": false,
+      "confidence_score": 0.87,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "5",
+        "text_cleaned": false,
+        "api_task_type": "comparison",
+        "api_page_section": "bottom",
+        "api_difficulty": "hard"
+      },
+      "created_at": "2025-07-31T14:17:08.264055"
+    }
+  ],
+  "processing_time": 2.042370557785034,
+  "image_info": {
+    "size_bytes": 2651472,
+    "format": "PNG",
+    "page_number": 109
+  },
+  "api_method": "mock",
+  "task_count": 2,
+  "processed_at": "2025-07-31T14:17:08.264680",
+  "storage_version": "2.0"
+}

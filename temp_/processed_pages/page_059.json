@@ -1,0 +1,32 @@
+{
+  "page_number": 59,
+  "tasks": [
+    {
+      "page_number": 59,
+      "task_number": "6",
+      "task_text": "Сколько будет 2 да 1?",
+      "has_image": false,
+      "confidence_score": 0.85,
+      "processing_time": null,
+      "extraction_metadata": {
+        "extraction_source": "vision_api",
+        "raw_task_number": "6",
+        "text_cleaned": false,
+        "api_task_type": "addition",
+        "api_page_section": "top",
+        "api_difficulty": "easy"
+      },
+      "created_at": "2025-07-31T14:15:08.661237"
+    }
+  ],
+  "processing_time": 2.0940403938293457,
+  "image_info": {
+    "size_bytes": 2558301,
+    "format": "PNG",
+    "page_number": 59
+  },
+  "api_method": "mock",
+  "task_count": 1,
+  "processed_at": "2025-07-31T14:15:08.664067",
+  "storage_version": "2.0"
+}
