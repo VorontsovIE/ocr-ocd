@@ -13,6 +13,7 @@ from tqdm import tqdm
 from src.utils.config import load_config, Config
 from src.utils.logger import setup_logger, get_logger, setup_development_logger, setup_production_logger
 from src.utils.state_manager import StateManager
+from src.utils.pdf_utils import generate_unique_temp_dir, validate_pdf_file, cleanup_temp_dir
 from src.core.pdf_processor import PDFProcessor, PDFProcessingError
 from src.core.vision_client import VisionClient, VisionAPIError
 from src.core.data_extractor import DataExtractor, DataExtractionError
@@ -76,6 +77,7 @@ class OCROCDOrchestrator:
         self.data_extractor = DataExtractor()
         self.csv_writer: Optional[CSVWriter] = None
         self.state_manager: Optional[StateManager] = None
+        self.unique_temp_dir: Optional[Path] = None
         
         # Processing statistics
         self.stats = {
@@ -104,10 +106,25 @@ class OCROCDOrchestrator:
             True if setup successful, False otherwise
         """
         try:
-            # Setup PDF processor
+            pdf_path = Path(input_pdf)
+            
+            # Validate PDF file first
+            if not validate_pdf_file(pdf_path):
+                self.logger.error(f"PDF validation failed: {input_pdf}")
+                return False
+            
+            # Generate unique temporary directory for this PDF
+            unique_temp_dir = generate_unique_temp_dir(
+                pdf_path=pdf_path,
+                base_temp_dir=Path(self.config.temp_dir)
+            )
+            
+            self.logger.info(f"Using unique temp directory: {unique_temp_dir}")
+            
+            # Setup PDF processor with unique temp directory
             self.pdf_processor = PDFProcessor(
                 pdf_path=input_pdf,
-                temp_dir=Path(self.config.temp_dir),
+                temp_dir=unique_temp_dir,
                 dpi=300,
                 image_format="PNG"
             )
@@ -118,18 +135,16 @@ class OCROCDOrchestrator:
             # Setup CSV writer
             self.csv_writer = CSVWriter(output_csv)
             
-            # Setup state manager
-            state_file = Path(self.config.temp_dir) / "processing_state.json"
+            # Setup state manager with unique temp directory
+            state_file = unique_temp_dir / "processing_state.json"
             self.state_manager = StateManager(str(state_file))
+            
+            # Store temp directory for cleanup
+            self.unique_temp_dir = unique_temp_dir
             
             # Test API connection
             if not self.vision_client.test_api_connection():
                 self.logger.error("Failed to connect to OpenAI API")
-                return False
-            
-            # Validate PDF and output paths
-            if not Path(input_pdf).exists():
-                self.logger.error(f"Input PDF not found: {input_pdf}")
                 return False
             
             if not self.csv_writer.validate_output_path():
@@ -355,11 +370,18 @@ class OCROCDOrchestrator:
     def cleanup(self):
         """Cleanup orchestrator resources."""
         try:
+            # Close PDF processor first
             if self.pdf_processor:
                 self.pdf_processor.close()
             
+            # Save final state
             if self.state_manager:
                 self.state_manager.save_state()
+            
+            # Clean up unique temporary directory
+            if self.unique_temp_dir:
+                cleanup_temp_dir(self.unique_temp_dir, keep_processed_files=True)
+                self.logger.info(f"Cleaned up temporary directory: {self.unique_temp_dir}")
             
             self.logger.info("Orchestrator cleanup completed")
         except Exception as e:
