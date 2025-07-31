@@ -72,12 +72,16 @@ def split_image_for_analysis(image_data: bytes, split_mode: str = "vertical") ->
     
     Args:
         image_data: Данные изображения
-        split_mode: Режим разделения ("vertical", "horizontal", "grid")
+        split_mode: Режим разделения ("original", "vertical", "horizontal", "grid")
         
     Returns:
         Список частей изображения
     """
     try:
+        # Если режим "original", возвращаем исходное изображение без разделения
+        if split_mode == "original":
+            return [image_data]
+        
         image = Image.open(io.BytesIO(image_data))
         width, height = image.size
         parts = []
@@ -222,7 +226,7 @@ class DirectVisionAPI:
             self.logger.warning(f"Image enhancement failed: {e}, using original")
             return image_data
         
-    def extract_tasks_from_page(self, image_data: bytes, page_number: int, use_split_analysis: bool = True) -> Dict[str, Any]:
+    def extract_tasks_from_page(self, image_data: bytes, page_number: int, use_split_analysis: bool = True, split_mode: str = "vertical") -> Dict[str, Any]:
         """
         Извлекает задачи со страницы используя прямой GPT-4 Vision API.
         
@@ -230,6 +234,7 @@ class DirectVisionAPI:
             image_data: Данные изображения
             page_number: Номер страницы  
             use_split_analysis: Использовать разделение изображения для лучшего анализа
+            split_mode: Режим разделения ("original", "vertical", "horizontal", "grid")
         """
         
         # Сохраняем исходное изображение
@@ -249,18 +254,18 @@ class DirectVisionAPI:
             self.logger.info(f"Page {page_number} images saved to disk: {enhanced_path.parent}")
         
         if use_split_analysis:
-            return self._analyze_with_split_method(enhanced_image_data, page_number)
+            return self._analyze_with_split_method(enhanced_image_data, page_number, split_mode)
         else:
             return self._analyze_whole_image(enhanced_image_data, page_number)
     
-    def _analyze_with_split_method(self, enhanced_image_data: bytes, page_number: int) -> Dict[str, Any]:
+    def _analyze_with_split_method(self, enhanced_image_data: bytes, page_number: int, split_mode: str = "vertical") -> Dict[str, Any]:
         """
         Анализирует страницу с разделением на части для лучшего покрытия.
         """
-        self.logger.info(f"Page {page_number}: Using split analysis method")
+        self.logger.info(f"Page {page_number}: Using split analysis method ({split_mode})")
         
         # Разделяем изображение на части
-        image_parts = split_image_for_analysis(enhanced_image_data, "vertical")
+        image_parts = split_image_for_analysis(enhanced_image_data, split_mode)
         
         all_tasks = []
         combined_processing_time = 0
@@ -269,7 +274,18 @@ class DirectVisionAPI:
         
         # Анализируем каждую часть отдельно
         for part_idx, part_data in enumerate(image_parts):
-            part_name = "левая_часть" if part_idx == 0 else "правая_часть"
+            # Определяем имя части в зависимости от режима разделения
+            if split_mode == "original":
+                part_name = "полная_страница"
+            elif split_mode == "vertical":
+                part_name = "левая_часть" if part_idx == 0 else "правая_часть"
+            elif split_mode == "horizontal":
+                part_name = "верхняя_часть" if part_idx == 0 else "нижняя_часть"
+            elif split_mode == "grid":
+                grid_names = ["верх_лево", "верх_право", "низ_лево", "низ_право"]
+                part_name = grid_names[part_idx] if part_idx < len(grid_names) else f"часть_{part_idx+1}"
+            else:
+                part_name = f"часть_{part_idx+1}"
             
             # Сохраняем части для отладки
             part_filename = f"page_{page_number:03d}_part_{part_idx+1}_{part_name}.png"
@@ -603,7 +619,7 @@ class ParallelProcessingManager:
         # Записываем время текущего запроса
         self.request_times.append(current_time)
     
-    async def process_page_async(self, vision_api: DirectVisionAPI, image_data: bytes, page_number: int) -> Dict[str, Any]:
+    async def process_page_async(self, vision_api: DirectVisionAPI, image_data: bytes, page_number: int, split_mode: str = "vertical") -> Dict[str, Any]:
         """Асинхронная обработка одной страницы."""
         await self._wait_for_rate_limit()
         
@@ -614,18 +630,21 @@ class ParallelProcessingManager:
                 executor, 
                 vision_api.extract_tasks_from_page,
                 image_data,
-                page_number
+                page_number,
+                True,  # use_split_analysis
+                split_mode
             )
         
         return result
     
-    async def process_pages_batch(self, vision_api: DirectVisionAPI, pages_data: List[tuple]) -> List[Dict[str, Any]]:
+    async def process_pages_batch(self, vision_api: DirectVisionAPI, pages_data: List[tuple], split_mode: str = "vertical") -> List[Dict[str, Any]]:
         """
         Обрабатывает пакет страниц параллельно.
         
         Args:
             vision_api: Экземпляр DirectVisionAPI
             pages_data: Список кортежей (image_data, page_number)
+            split_mode: Режим разделения изображения
             
         Returns:
             Список результатов обработки
@@ -634,7 +653,7 @@ class ParallelProcessingManager:
         
         async def process_with_semaphore(image_data, page_number):
             async with semaphore:
-                return await self.process_page_async(vision_api, image_data, page_number)
+                return await self.process_page_async(vision_api, image_data, page_number, split_mode)
         
         # Создаем задачи для всех страниц
         tasks = [
@@ -688,12 +707,14 @@ class PureVisionFixedExtractor:
         else:
             self.logger.info(f"Pure Vision Fixed extractor initialized: {pdf_path}")
     
-    def extract_tasks_from_page(self, page_number: int, use_split_analysis: bool = True) -> Dict[str, Any]:
+    def extract_tasks_from_page(self, page_number: int, use_split_analysis: bool = True, split_mode: str = "vertical") -> Dict[str, Any]:
         """
         Извлекает задачи со страницы используя исправленный Pure Vision.
         
         Args:
             page_number: Номер страницы для обработки (1-based)
+            use_split_analysis: Использовать разделение изображения для лучшего анализа
+            split_mode: Режим разделения ("original", "vertical", "horizontal", "grid")
             
         Returns:
             Словарь с результатами извлечения
@@ -716,7 +737,7 @@ class PureVisionFixedExtractor:
             # Анализируем через прямой GPT-4 Vision API
             self.logger.debug(f"Analyzing page {page_number} with Direct GPT-4 Vision")
             
-            api_result = self.vision_api.extract_tasks_from_page(page_image, page_number, use_split_analysis)
+            api_result = self.vision_api.extract_tasks_from_page(page_image, page_number, use_split_analysis, split_mode)
             
             if not api_result.get('success', False):
                 return {
@@ -860,7 +881,7 @@ class PureVisionFixedStorage:
 
 
 async def process_pages_parallel(extractor, parallel_manager, storage, start_page, end_page, 
-                                processed_pages, force, verbose, batch_size):
+                                processed_pages, force, verbose, batch_size, split_mode):
     """
     Обрабатывает страницы параллельно пакетами.
     
@@ -917,7 +938,7 @@ async def process_pages_parallel(extractor, parallel_manager, storage, start_pag
         batch_start_time = time.time()
         try:
             batch_results = await parallel_manager.process_pages_batch(
-                extractor.vision_api, batch_data
+                extractor.vision_api, batch_data, split_mode
             )
             batch_time = time.time() - batch_start_time
             
@@ -1006,7 +1027,8 @@ async def process_pages_parallel(extractor, parallel_manager, storage, start_pag
 @click.option('--batch-size', type=int, default=5, help='Размер пакета для параллельной обработки (по умолчанию: 5)')
 @click.option('--split-analysis', is_flag=True, default=True, help='🎯 РЕКОМЕНДУЕТСЯ: Разделять изображения на части для лучшего анализа многоколоночных страниц (по умолчанию: включено)')
 @click.option('--no-split', is_flag=True, help='Отключить разделение изображений (использовать старый метод анализа целой страницы)')
-def process_textbook_pure_vision_fixed(pdf_file, output_csv, force, start_page, end_page, production, verbose, parallel, max_concurrent, batch_size, split_analysis, no_split):
+@click.option('--split-mode', type=click.Choice(['original', 'vertical', 'horizontal', 'grid']), default='vertical', help='🎯 Режим разделения изображения: original (без разделения), vertical (лево/право), horizontal (верх/низ), grid (сетка 2x2)')
+def process_textbook_pure_vision_fixed(pdf_file, output_csv, force, start_page, end_page, production, verbose, parallel, max_concurrent, batch_size, split_analysis, no_split, split_mode):
     """
     OCR-OCD Pure Vision Fixed: Исправленная прямая интеграция GPT-4 Vision.
     
@@ -1032,7 +1054,13 @@ def process_textbook_pure_vision_fixed(pdf_file, output_csv, force, start_page, 
         print(f"💡 Для экспериментального параллелизма добавьте --parallel")
     print(f"🎯 Анализ изображений: {'🔄 SPLIT-режим (части)' if use_split_analysis else '📄 ЦЕЛАЯ страница'}")
     if use_split_analysis:
-        print(f"   ✨ Разделение на части для лучшего анализа многоколоночных страниц")
+        mode_descriptions = {
+            'original': 'без разделения (как целая страница)',
+            'vertical': 'вертикальное разделение (лево/право)',
+            'horizontal': 'горизонтальное разделение (верх/низ)',
+            'grid': 'сетка 2x2 (четыре части)'
+        }
+        print(f"   ✨ Режим разделения: {split_mode} ({mode_descriptions.get(split_mode, 'неизвестный')})")
     print(f"🎯 Улучшенный подход: прямой OpenAI API + предобработка изображений")
     print(f"✨ Полный анализ страниц + формулы")
     
@@ -1128,7 +1156,7 @@ def process_textbook_pure_vision_fixed(pdf_file, output_csv, force, start_page, 
                 processed_count, skipped_count, error_count, total_tasks, total_tokens, total_api_time = loop.run_until_complete(
                     process_pages_parallel(
                         extractor, parallel_manager, storage, 
-                        start_page, end_page, processed_pages, force, verbose, batch_size
+                        start_page, end_page, processed_pages, force, verbose, batch_size, split_mode
                     )
                 )
             finally:
@@ -1151,10 +1179,19 @@ def process_textbook_pure_vision_fixed(pdf_file, output_csv, force, start_page, 
                     
                     # Pure Vision Fixed обработка
                     if verbose:
-                        analysis_mode = "split-анализ" if use_split_analysis else "целая страница"
+                        if use_split_analysis:
+                            mode_descriptions = {
+                                'original': 'без разделения',
+                                'vertical': 'лево/право',
+                                'horizontal': 'верх/низ',
+                                'grid': 'сетка 2x2'
+                            }
+                            analysis_mode = f"split-анализ ({mode_descriptions.get(split_mode, split_mode)})"
+                        else:
+                            analysis_mode = "целая страница"
                         print(f"  🔧 Pure Vision Fixed анализ ({analysis_mode})...")
                     
-                    result = extractor.extract_tasks_from_page(page_num, use_split_analysis)
+                    result = extractor.extract_tasks_from_page(page_num, use_split_analysis, split_mode)
                     
                     if 'error' in result:
                         error_count += 1
