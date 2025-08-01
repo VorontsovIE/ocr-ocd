@@ -20,7 +20,10 @@ OCR-OCD - это Python-скрипт для автоматического из�
 ## Требования
 
 - Python 3.9+
-- OpenAI API ключ
+- API ключ для одного из провайдеров:
+  - OpenAI GPT-4 Vision API
+  - Google Gemini API
+  - Anthropic Claude API
 - 2GB+ RAM
 - 1GB+ свободного места на диске
 - Стабильное интернет-соединение
@@ -38,14 +41,26 @@ cd ocr-ocd
 pip install -r requirements.txt
 ```
 
-3. Создайте файл конфигурации:
+3. Проверьте установку зависимостей:
 ```bash
-cp .env.example .env
+python check_dependencies.py
 ```
 
-4. Добавьте ваш OpenAI API ключ в файл `.env`:
+4. Создайте файл конфигурации:
+```bash
+cp env.example .env
 ```
-OPENAI_API_KEY=your_api_key_here
+
+5. Добавьте ваш API ключ в файл `.env`:
+```
+# OpenAI GPT-4 Vision
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Google Gemini (альтернатива)
+GEMINI_API_KEY=your_gemini_api_key_here
+
+# Anthropic Claude (альтернатива)
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
 ```
 
 ## Использование
