@@ -794,25 +794,29 @@ def process_textbook_pure_vision_fixed(pdf_file, output_csv, force, start_page, 
         # Загружаем все результаты
         all_results = storage.load_all_results()
         
-        # Создаем CSV файл
-        create_pure_vision_fixed_csv(all_results, output_csv)
+        # Создаем CSV файл (только успешные результаты)
+        create_pure_vision_fixed_csv(successful_results, output_csv)
         
         # Статистика
         end_time = time.time()
         processing_time = end_time - start_time
         
-        total_tasks = sum(len(result.get("tasks", [])) for result in all_results)
-        successful_pages = len([r for r in all_results if not r.get("error")])
-        failed_pages = len([r for r in all_results if r.get("error")])
+        # Фильтруем результаты: исключаем страницы с ошибками из CSV
+        successful_results = [r for r in all_results if not r.get("error")]
+        failed_results = [r for r in all_results if r.get("error")]
+        
+        total_tasks = sum(len(result.get("tasks", [])) for result in successful_results)
+        successful_pages = len(successful_results)
+        failed_pages = len(failed_results)
         
         logger.info("=" * 60)
         logger.info("✅ ОБРАБОТКА ЗАВЕРШЕНА")
         logger.info("=" * 60)
         logger.info(f"⏱️  Время обработки: {processing_time:.1f} секунд")
-        logger.info(f"📄 Обработано страниц: {len(all_results)}")
-        logger.info(f"✅ Успешных страниц: {successful_pages}")
-        logger.info(f"❌ Ошибок: {failed_pages}")
-        logger.info(f"📝 Всего задач: {total_tasks}")
+        logger.info(f"📄 Всего страниц: {len(all_results)}")
+        logger.info(f"✅ Успешных страниц (в CSV): {successful_pages}")
+        logger.info(f"❌ Страниц с ошибками (исключены): {failed_pages}")
+        logger.info(f"📝 Всего задач в CSV: {total_tasks}")
         logger.info(f"📊 Результат сохранен в: {output_csv}")
         logger.info("=" * 60)
         
@@ -824,6 +828,7 @@ def process_textbook_pure_vision_fixed(pdf_file, output_csv, force, start_page, 
 def create_pure_vision_fixed_csv(results: List[Dict], output_path: str) -> None:
     """
     Создает CSV файл с результатами обработки.
+    Страницы с ошибками исключаются из CSV и только логируются.
     
     Args:
         results: Список результатов обработки страниц
@@ -831,7 +836,7 @@ def create_pure_vision_fixed_csv(results: List[Dict], output_path: str) -> None:
     """
     import csv
     
-    # Подготавливаем данные для CSV
+    # Подготавливаем данные для CSV (результаты уже отфильтрованы)
     csv_data = []
     
     for page_result in results:
@@ -848,7 +853,7 @@ def create_pure_vision_fixed_csv(results: List[Dict], output_path: str) -> None:
                 "difficulty": "",
                 "part": "",
                 "analysis_method": page_result.get("analysis_method", ""),
-                "error": page_result.get("error", "")
+                "error": ""
             })
         else:
             # Добавляем каждую задачу
