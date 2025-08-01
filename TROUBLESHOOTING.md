@@ -80,6 +80,30 @@ chmod +x *.py
 ### 4. Проблемы с Python path
 Если модули не находятся, убедитесь, что вы запускаете скрипты из корневой директории проекта.
 
+## Ошибка OpenSSL/urllib3
+
+### Проблема
+```
+ImportError: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'OpenSSL 1.0.2n  7 Dec 2017'
+```
+
+### Решение для старых серверов
+1. Используйте специальный файл requirements:
+```bash
+pip install -r requirements_legacy.txt
+```
+
+2. Или установите совместимые версии вручную:
+```bash
+pip install urllib3==1.26.18 requests==2.31.0
+pip install -r requirements.txt
+```
+
+3. Проверьте установку:
+```bash
+python check_dependencies.py
+```
+
 ## Получение API ключей
 
 ### OpenAI GPT-4 Vision

@@ -1,3 +1,6 @@
+# Requirements для старых серверов с OpenSSL 1.0.2
+# Используйте этот файл, если получаете ошибку urllib3/OpenSSL
+
 PyMuPDF==1.24.1
 openai==1.51.2
 Pillow==10.4.0
@@ -12,7 +15,6 @@ requests==2.31.0
 urllib3==1.26.18
 google-generativeai==0.8.3
 anthropic==0.34.0
-asyncio-mqtt==0.16.1
 
 # Development dependencies
 pytest==8.3.3

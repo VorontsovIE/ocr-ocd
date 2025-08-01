@@ -37,8 +37,20 @@ cd ocr-ocd
 ```
 
 2. Установите зависимости:
+
+**Для современных серверов:**
 ```bash
 pip install -r requirements.txt
+```
+
+**Для старых серверов (OpenSSL < 1.1.1):**
+```bash
+pip install -r requirements_legacy.txt
+```
+
+**Автоматическая установка (рекомендуется):**
+```bash
+python install_dependencies.py
 ```
 
 3. Проверьте установку зависимостей:
