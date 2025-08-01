@@ -372,7 +372,7 @@ class GeminiAdapter(VisionAPIAdapter):
             
             return VisionResponse(
                 content=response.text,
-                model_used=request.model_name or "gemini-2.0-flash-exp",
+                model_used="gemini-2.0-flash-exp",
                 processing_time=processing_time
             )
             
@@ -380,7 +380,7 @@ class GeminiAdapter(VisionAPIAdapter):
             processing_time = time.time() - start_time
             return VisionResponse(
                 content="",
-                model_used=request.model_name or "gemini-2.0-flash-exp",
+                model_used="gemini-2.0-flash-exp",
                 processing_time=processing_time,
                 error=str(e)
             )

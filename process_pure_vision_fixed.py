@@ -15,6 +15,7 @@ import sys
 import json
 import time
 import base64
+import os
 import click
 import openai
 import asyncio
@@ -31,7 +32,9 @@ import io
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 from src.core.pdf_processor import PDFProcessor
+from src.core.vision_adapters import VisionAdapterFactory, VisionProvider
 from src.utils.logger import setup_development_logger, setup_production_logger, get_logger
+from src.utils.config import APIConfig
 
 
 class FileIdentifier:
@@ -161,13 +164,43 @@ class ImageEnhancer:
 
 
 class VisionAPI:
-    """Интерфейс для работы с OpenAI Vision API"""
+    """Интерфейс для работы с мультимодальными API"""
     
-    def __init__(self, images_dir: Optional[Path] = None):
+    def __init__(self, provider: VisionProvider = VisionProvider.GEMINI, images_dir: Optional[Path] = None):
         load_dotenv()
-        self.client = openai.OpenAI()
+        self.provider = provider
         self.images_dir = images_dir or Path("temp/images")
         self.images_dir.mkdir(parents=True, exist_ok=True)
+        self.logger = get_logger(__name__)
+        
+        # Создаем конфигурацию API
+        api_key = None
+        model_name = "gpt-4-vision-preview"  # По умолчанию для OpenAI
+        
+        if provider == VisionProvider.OPENAI:
+            api_key = os.getenv("OPENAI_API_KEY")
+            model_name = "gpt-4-vision-preview"
+        elif provider == VisionProvider.GEMINI:
+            api_key = os.getenv("GEMINI_API_KEY")
+            model_name = "gemini-2.0-flash-exp"
+        elif provider == VisionProvider.CLAUDE:
+            api_key = os.getenv("CLAUDE_API_KEY")
+            model_name = "claude-3-5-sonnet-20241022"
+        
+        if not api_key:
+            raise ValueError(f"API key for {provider.value} is required")
+        
+        self.api_config = APIConfig(
+            provider=provider.value,
+            api_key=api_key,
+            openai_api_key=os.getenv("OPENAI_API_KEY"),
+            gemini_api_key=os.getenv("GEMINI_API_KEY"),
+            claude_api_key=os.getenv("CLAUDE_API_KEY"),
+            model_name=model_name
+        )
+        
+        # Создаем адаптер для выбранного провайдера
+        self.adapter = VisionAdapterFactory.create_adapter(provider, self.api_config)
         
     def _save_image_to_disk(self, image_data: bytes, filename: str, subfolder: str = "") -> Optional[Path]:
         """Сохраняет изображение на диск для отладки"""
@@ -180,7 +213,7 @@ class VisionAPI:
                 f.write(image_data)
             return file_path
         except Exception as e:
-            get_logger().warning(f"Не удалось сохранить изображение: {e}")
+            get_logger(__name__).warning(f"Не удалось сохранить изображение: {e}")
             return None
     
     def _enhance_image_for_ocr(self, image_data: bytes) -> bytes:
@@ -190,7 +223,7 @@ class VisionAPI:
     def extract_tasks_from_page(self, image_data: bytes, page_number: int, 
                                use_split_analysis: bool = True, split_mode: str = "vertical") -> Dict[str, Any]:
         """
-        Извлекает задачи со страницы используя Vision API.
+        Извлекает задачи со страницы используя мультимодальный API.
         
         Args:
             image_data: Данные изображения страницы
@@ -245,9 +278,6 @@ class VisionAPI:
             debug_filename = f"page_{page_number}_{part_name}.png"
             self._save_image_to_disk(part_data, debug_filename, f"page_{page_number}")
             
-            # Кодируем изображение в base64
-            image_base64 = base64.b64encode(part_data).decode('utf-8')
-            
             # Формируем промпт для анализа
             prompt = f"""
             Анализируй эту часть страницы {page_number} (часть {part_number}) из учебника математики.
@@ -276,84 +306,33 @@ class VisionAPI:
             Если задач не найдено, верни пустой массив tasks.
             """
             
-            # Отправляем запрос к Vision API
-            response = self.client.chat.completions.create(
-                model="gpt-4-vision-preview",
-                messages=[
-                    {
-                        "role": "user",
-                        "content": [
-                            {"type": "text", "text": prompt},
-                            {
-                                "type": "image_url",
-                                "image_url": {
-                                    "url": f"data:image/png;base64,{image_base64}"
-                                }
-                            }
-                        ]
-                    }
-                ],
-                max_tokens=4000,
-                temperature=0.1
+            # Используем адаптер для отправки запроса
+            result = self.adapter.extract_tasks_from_page(
+                image_data=part_data,
+                page_number=page_number,
+                prompt=prompt
             )
             
-            # Парсим ответ
-            content = response.choices[0].message.content
-            try:
-                # Пытаемся извлечь JSON из ответа
-                json_start = content.find('{')
-                json_end = content.rfind('}') + 1
-                
-                if json_start != -1 and json_end > json_start:
-                    json_str = content[json_start:json_end]
-                    result = json.loads(json_str)
-                else:
-                    # Если JSON не найден, создаем структуру из текста
-                    result = {"tasks": []}
-                    lines = content.split('\n')
-                    current_task = None
-                    
-                    for line in lines:
-                        line = line.strip()
-                        if line and not line.startswith('```'):
-                            if current_task is None:
-                                current_task = {
-                                    "number": f"part_{part_number}_task_{len(result['tasks']) + 1}",
-                                    "text": line,
-                                    "type": "задача",
-                                    "difficulty": "неизвестно",
-                                    "part": part_name
-                                }
-                            else:
-                                current_task["text"] += " " + line
-                    
-                    if current_task:
-                        result["tasks"].append(current_task)
-                
-                # Добавляем метаданные
-                result.update({
-                    "page_number": page_number,
-                    "part_name": part_name,
-                    "part_number": part_number,
-                    "analysis_method": "vision_api_split",
-                    "timestamp": datetime.now().isoformat()
-                })
-                
-                return result
-                
-            except json.JSONDecodeError as e:
-                get_logger().warning(f"Ошибка парсинга JSON для части {part_name}: {e}")
-                return self._create_fallback_structure(content, page_number)
+            # Добавляем метаданные
+            result.update({
+                "page_number": page_number,
+                "part_name": part_name,
+                "part_number": part_number,
+                "analysis_method": f"{self.provider.value}_api_split",
+                "timestamp": datetime.now().isoformat()
+            })
+            
+            return result
                 
         except Exception as e:
-            get_logger().error(f"Ошибка анализа части {part_name}: {e}")
+            self.logger.error(f"Ошибка анализа части {part_name}: {e}")
             return {
                 "page_number": page_number,
                 "part_name": part_name,
                 "part_number": part_number,
                 "tasks": [],
                 "error": str(e),
-                "analysis_method": "vision_api_split",
+                "analysis_method": f"{self.provider.value}_api_split",
                 "timestamp": datetime.now().isoformat()
             }
     
@@ -363,9 +342,6 @@ class VisionAPI:
             # Сохраняем изображение для отладки
             debug_filename = f"page_{page_number}_whole.png"
             self._save_image_to_disk(enhanced_image_data, debug_filename, f"page_{page_number}")
-            
-            # Кодируем изображение в base64
-            image_base64 = base64.b64encode(enhanced_image_data).decode('utf-8')
             
             # Формируем промпт для анализа
             prompt = f"""
@@ -394,79 +370,29 @@ class VisionAPI:
             Если задач не найдено, верни пустой массив tasks.
             """
             
-            # Отправляем запрос к Vision API
-            response = self.client.chat.completions.create(
-                model="gpt-4-vision-preview",
-                messages=[
-                    {
-                        "role": "user",
-                        "content": [
-                            {"type": "text", "text": prompt},
-                            {
-                                "type": "image_url",
-                                "image_url": {
-                                    "url": f"data:image/png;base64,{image_base64}"
-                                }
-                            }
-                        ]
-                    }
-                ],
-                max_tokens=4000,
-                temperature=0.1
+            # Используем адаптер для отправки запроса
+            result = self.adapter.extract_tasks_from_page(
+                image_data=enhanced_image_data,
+                page_number=page_number,
+                prompt=prompt
             )
             
-            # Парсим ответ
-            content = response.choices[0].message.content
-            try:
-                # Пытаемся извлечь JSON из ответа
-                json_start = content.find('{')
-                json_end = content.rfind('}') + 1
-                
-                if json_start != -1 and json_end > json_start:
-                    json_str = content[json_start:json_end]
-                    result = json.loads(json_str)
-                else:
-                    # Если JSON не найден, создаем структуру из текста
-                    result = {"tasks": []}
-                    lines = content.split('\n')
-                    current_task = None
-                    
-                    for line in lines:
-                        line = line.strip()
-                        if line and not line.startswith('```'):
-                            if current_task is None:
-                                current_task = {
-                                    "number": f"task_{len(result['tasks']) + 1}",
-                                    "text": line,
-                                    "type": "задача",
-                                    "difficulty": "неизвестно"
-                                }
-                            else:
-                                current_task["text"] += " " + line
-                    
-                    if current_task:
-                        result["tasks"].append(current_task)
-                
-                # Добавляем метаданные
-                result.update({
-                    "page_number": page_number,
-                    "analysis_method": "vision_api_whole",
-                    "timestamp": datetime.now().isoformat()
-                })
-                
-                return result
-                
-            except json.JSONDecodeError as e:
-                get_logger().warning(f"Ошибка парсинга JSON для страницы {page_number}: {e}")
-                return self._create_fallback_structure(content, page_number)
+            # Добавляем метаданные
+            result.update({
+                "page_number": page_number,
+                "analysis_method": f"{self.provider.value}_api_whole",
+                "timestamp": datetime.now().isoformat()
+            })
+            
+            return result
                 
         except Exception as e:
-            get_logger().error(f"Ошибка анализа страницы {page_number}: {e}")
+            self.logger.error(f"Ошибка анализа страницы {page_number}: {e}")
             return {
                 "page_number": page_number,
                 "tasks": [],
                 "error": str(e),
-                "analysis_method": "vision_api_whole",
+                "analysis_method": f"{self.provider.value}_api_whole",
                 "timestamp": datetime.now().isoformat()
             }
     
@@ -496,7 +422,7 @@ class ParallelProcessor:
         self.requests_per_minute = requests_per_minute
         self.semaphore = asyncio.Semaphore(max_concurrent_requests)
         self.request_times = []
-        self.logger = get_logger()
+        self.logger = get_logger(__name__)
     
     async def _wait_for_rate_limit(self):
         """Ожидание для соблюдения лимитов API"""
@@ -568,12 +494,15 @@ class ParallelProcessor:
 class TaskExtractor:
     """Основной класс для извлечения задач из PDF"""
     
-    def __init__(self, pdf_path: str, images_dir: Optional[Path] = None):
+    def __init__(self, pdf_path: str, provider: VisionProvider = VisionProvider.GEMINI, images_dir: Optional[Path] = None):
         self.pdf_path = pdf_path
         self.file_identifier = FileIdentifier.generate(pdf_path)
         self.pdf_processor = PDFProcessor(pdf_path)
-        self.vision_api = VisionAPI(images_dir)
-        self.logger = get_logger()
+        self.vision_api = VisionAPI(provider, images_dir)
+        self.logger = get_logger(__name__)
+        
+        # Загружаем PDF
+        self.pdf_processor.load_pdf()
         
         # Создаем директории для временных файлов
         self.temp_dir = Path("temp") / self.file_identifier
@@ -600,7 +529,7 @@ class TaskExtractor:
             self.logger.info(f"Обработка страницы {page_number}")
             
             # Получаем изображение страницы
-            image_data = self.pdf_processor.get_page_image(page_number)
+            image_data = self.pdf_processor.convert_page_to_image(page_number)
             
             if image_data is None:
                 self.logger.error(f"Не удалось получить изображение страницы {page_number}")
@@ -637,7 +566,7 @@ class TaskExtractor:
     
     def get_total_pages(self) -> int:
         """Возвращает общее количество страниц в PDF"""
-        return self.pdf_processor.get_total_pages()
+        return self.pdf_processor.get_page_count()
     
     def _calculate_confidence(self, task_data: Dict[str, Any], api_result: Dict[str, Any]) -> float:
         """Вычисляет уверенность в результате анализа"""
@@ -709,14 +638,14 @@ async def process_pages_parallel(extractor: TaskExtractor, parallel_processor: P
                                processed_pages: List[int], force: bool, verbose: bool, 
                                batch_size: int, split_mode: str):
     """Параллельная обработка страниц"""
-    logger = get_logger()
+    logger = get_logger(__name__)
     
     # Определяем страницы для обработки
     pages_to_process = []
     for page_num in range(start_page, end_page + 1):
         if force or page_num not in processed_pages:
             try:
-                image_data = extractor.pdf_processor.get_page_image(page_num)
+                image_data = extractor.pdf_processor.convert_page_to_image(page_num)
                 if image_data:
                     pages_to_process.append((image_data, page_num))
                 else:
@@ -762,7 +691,7 @@ def process_pages_sequential(extractor: TaskExtractor, storage: ResultStorage,
                            start_page: int, end_page: int, processed_pages: List[int], 
                            force: bool, verbose: bool, split_mode: str):
     """Последовательная обработка страниц"""
-    logger = get_logger()
+    logger = get_logger(__name__)
     
     results = []
     for page_num in range(start_page, end_page + 1):
@@ -798,12 +727,13 @@ def process_pages_sequential(extractor: TaskExtractor, storage: ResultStorage,
 @click.option('--parallel', is_flag=True, help='🧪 ЭКСПЕРИМЕНТАЛЬНО: Включить параллельную обработку (может быть нестабильно)')
 @click.option('--max-concurrent', type=int, default=3, help='Максимум одновременных запросов для --parallel (по умолчанию: 3, рекомендуется не более 5)')
 @click.option('--batch-size', type=int, default=5, help='Размер пакета для параллельной обработки (по умолчанию: 5)')
+@click.option('--provider', type=click.Choice(['openai', 'gemini', 'claude']), default='gemini', help='Провайдер мультимодального API (openai, gemini, claude)')
 @click.option('--split-analysis', is_flag=True, default=True, help='🎯 РЕКОМЕНДУЕТСЯ: Разделять изображения на части для лучшего анализа многоколоночных страниц (по умолчанию: включено)')
 @click.option('--no-split', is_flag=True, help='Отключить разделение изображений (использовать старый метод анализа целой страницы)')
 @click.option('--split-mode', type=click.Choice(['original', 'vertical', 'horizontal', 'grid']), default='vertical', help='🎯 Режим разделения изображения: original (без разделения), vertical (лево/право), horizontal (верх/низ), grid (сетка 2x2)')
 def process_textbook_pure_vision_fixed(pdf_file, output_csv, force, start_page, end_page, 
                                       production, verbose, parallel, max_concurrent, batch_size, 
-                                      split_analysis, no_split, split_mode):
+                                      provider, split_analysis, no_split, split_mode):
     """
     Обрабатывает учебник математики используя OpenAI Vision API.
     
@@ -815,7 +745,7 @@ def process_textbook_pure_vision_fixed(pdf_file, output_csv, force, start_page, 
     else:
         setup_development_logger()
     
-    logger = get_logger()
+    logger = get_logger(__name__)
     
     # Определяем режим разделения
     if no_split:
@@ -827,9 +757,13 @@ def process_textbook_pure_vision_fixed(pdf_file, output_csv, force, start_page, 
     logger.info("=" * 60)
     logger.info("🚀 ЗАПУСК OCR-OCD Pure Vision Fixed")
     logger.info("=" * 60)
+    # Определяем провайдер
+    provider_enum = VisionProvider(provider)
+    
     logger.info(f"📖 PDF файл: {pdf_file}")
     logger.info(f"📊 Выходной CSV: {output_csv}")
     logger.info(f"📄 Страницы: {start_page}-{end_page if end_page else 'конец'}")
+    logger.info(f"🤖 Провайдер API: {provider.upper()}")
     logger.info(f"🔧 Режим разделения: {split_mode}")
     logger.info(f"⚡ Параллельная обработка: {'ВКЛ' if parallel else 'ВЫКЛ'}")
     logger.info(f"🔄 Принудительная переобработка: {'ДА' if force else 'НЕТ'}")
@@ -837,7 +771,7 @@ def process_textbook_pure_vision_fixed(pdf_file, output_csv, force, start_page, 
     
     try:
         # Инициализация компонентов
-        extractor = TaskExtractor(pdf_file)
+        extractor = TaskExtractor(pdf_file, provider_enum)
         total_pages = extractor.get_total_pages()
         
         if end_page is None:

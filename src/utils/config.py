@@ -8,8 +8,12 @@ import os
 
 
 class APIConfig(BaseModel):
-    """OpenAI API configuration."""
-    api_key: str = Field(..., description="OpenAI API key")
+    """API configuration for different providers."""
+    provider: str = Field(..., description="API provider (openai, gemini, claude)")
+    api_key: str = Field(..., description="API key for the selected provider")
+    openai_api_key: Optional[str] = Field(None, description="OpenAI API key")
+    gemini_api_key: Optional[str] = Field(None, description="Gemini API key")
+    claude_api_key: Optional[str] = Field(None, description="Claude API key")
     model_name: str = Field(default="gpt-4o", description="Model name")
     max_tokens: int = Field(default=4096, description="Maximum tokens in response")
     temperature: float = Field(default=0.1, description="Generation temperature")
@@ -27,11 +31,12 @@ class Config(BaseModel):
     logs_dir: Path = Field(default=Path("logs"), description="Logs directory")
 
 
-def load_config(env_file: Optional[Path] = None) -> Config:
+def load_config(env_file: Optional[Path] = None, provider: str = "openai") -> Config:
     """Load configuration from environment variables.
     
     Args:
         env_file: Optional path to .env file
+        provider: API provider to use
         
     Returns:
         Configuration object
@@ -41,13 +46,34 @@ def load_config(env_file: Optional[Path] = None) -> Config:
     else:
         load_dotenv()
     
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        raise ValueError("OPENAI_API_KEY environment variable is required")
+    # Get API keys for different providers
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+    gemini_api_key = os.getenv("GEMINI_API_KEY")
+    claude_api_key = os.getenv("CLAUDE_API_KEY")
+    
+    # Select API key based on provider
+    if provider == "openai":
+        api_key = openai_api_key
+        if not api_key:
+            raise ValueError("OPENAI_API_KEY environment variable is required")
+    elif provider == "gemini":
+        api_key = gemini_api_key
+        if not api_key:
+            raise ValueError("GEMINI_API_KEY environment variable is required")
+    elif provider == "claude":
+        api_key = claude_api_key
+        if not api_key:
+            raise ValueError("CLAUDE_API_KEY environment variable is required")
+    else:
+        raise ValueError(f"Unsupported provider: {provider}")
     
     try:
         api_config = APIConfig(
+            provider=provider,
             api_key=api_key,
+            openai_api_key=openai_api_key,
+            gemini_api_key=gemini_api_key,
+            claude_api_key=claude_api_key,
             model_name=os.getenv("MODEL_NAME", "gpt-4-vision-preview"),
             max_tokens=int(os.getenv("MAX_TOKENS", "4096")),
             temperature=float(os.getenv("TEMPERATURE", "0.1")),
