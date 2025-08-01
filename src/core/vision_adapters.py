@@ -337,11 +337,37 @@ class GeminiAdapter(VisionAPIAdapter):
         return VisionProvider.GEMINI
     
     def _encode_image(self, image_data: bytes) -> Dict[str, Any]:
-        """Кодирует изображение для Gemini API"""
-        return {
-            "mime_type": "image/png",
-            "data": base64.b64encode(image_data).decode('utf-8')
-        }
+        """Кодирует изображение для Gemini API с сжатием"""
+        try:
+            # Сжимаем изображение для уменьшения размера
+            from PIL import Image
+            import io
+            
+            # Открываем изображение
+            image = Image.open(io.BytesIO(image_data))
+            
+            # Уменьшаем размер если изображение слишком большое
+            max_size = 1024
+            if max(image.size) > max_size:
+                ratio = max_size / max(image.size)
+                new_size = tuple(int(dim * ratio) for dim in image.size)
+                image = image.resize(new_size, Image.Resampling.LANCZOS)
+            
+            # Сохраняем с сжатием
+            buffer = io.BytesIO()
+            image.save(buffer, format='PNG', optimize=True, quality=85)
+            compressed_data = buffer.getvalue()
+            
+            return {
+                "mime_type": "image/png",
+                "data": base64.b64encode(compressed_data).decode('utf-8')
+            }
+        except Exception as e:
+            # Если сжатие не удалось, используем оригинальные данные
+            return {
+                "mime_type": "image/png",
+                "data": base64.b64encode(image_data).decode('utf-8')
+            }
     
     def _build_messages(self, request: VisionRequest) -> List[Dict[str, Any]]:
         """Строит сообщения для Gemini API"""
@@ -378,11 +404,17 @@ class GeminiAdapter(VisionAPIAdapter):
             
         except Exception as e:
             processing_time = time.time() - start_time
+            error_msg = str(e)
+            
+            # Обрабатываем ошибку превышения лимита метаданных
+            if "429" in error_msg and "metadata size exceeds" in error_msg:
+                error_msg = "Превышен лимит размера метаданных (429). Попробуйте уменьшить размер изображения или использовать разделение страниц."
+            
             return VisionResponse(
                 content="",
                 model_used="gemini-2.0-flash-exp",
                 processing_time=processing_time,
-                error=str(e)
+                error=error_msg
             )
 
 
