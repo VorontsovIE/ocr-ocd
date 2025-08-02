@@ -594,6 +594,29 @@ class ResultStorage:
                 continue
         return sorted(processed)
     
+    def get_successful_pages(self) -> List[int]:
+        """Возвращает список успешно обработанных страниц (без ошибок)"""
+        successful = []
+        for page_num in self.get_processed_pages():
+            result = self.load_page_result(page_num)
+            if result and not result.get("error"):
+                successful.append(page_num)
+        return successful
+    
+    def get_failed_pages(self) -> List[int]:
+        """Возвращает список страниц с ошибками"""
+        failed = []
+        for page_num in self.get_processed_pages():
+            result = self.load_page_result(page_num)
+            if result and result.get("error"):
+                failed.append(page_num)
+        return failed
+    
+    def is_page_successful(self, page_number: int) -> bool:
+        """Проверяет, была ли страница успешно обработана"""
+        result = self.load_page_result(page_number)
+        return result is not None and not result.get("error")
+    
     def load_all_results(self) -> List[Dict[str, Any]]:
         """Загружает все результаты обработки"""
         results = []
@@ -619,15 +642,25 @@ async def process_pages_parallel(extractor: TaskExtractor, parallel_processor: P
     # Определяем страницы для обработки
     pages_to_process = []
     for page_num in range(start_page, end_page + 1):
-        if force or page_num not in processed_pages:
+        # Обрабатываем страницу если:
+        # 1. Принудительная переобработка (force=True)
+        # 2. Страница не была успешно обработана ранее
+        # 3. Страница вообще не обрабатывалась
+        should_process = force or page_num not in processed_pages
+        
+        if should_process:
             try:
                 image_data = extractor.pdf_processor.convert_page_to_image(page_num)
                 if image_data:
                     pages_to_process.append((image_data, page_num))
+                    if verbose:
+                        logger.info(f"Добавлена страница {page_num} для обработки")
                 else:
                     logger.warning(f"Не удалось получить изображение страницы {page_num}")
             except Exception as e:
                 logger.error(f"Ошибка получения изображения страницы {page_num}: {e}")
+        elif verbose:
+            logger.info(f"Страница {page_num} уже успешно обработана, пропускаем")
     
     if not pages_to_process:
         logger.info("Нет страниц для обработки")
@@ -671,7 +704,13 @@ def process_pages_sequential(extractor: TaskExtractor, storage: ResultStorage,
     
     results = []
     for page_num in range(start_page, end_page + 1):
-        if force or page_num not in processed_pages:
+        # Обрабатываем страницу если:
+        # 1. Принудительная переобработка (force=True)
+        # 2. Страница не была успешно обработана ранее
+        # 3. Страница вообще не обрабатывалась
+        should_process = force or page_num not in processed_pages
+        
+        if should_process:
             if verbose:
                 logger.info(f"Обработка страницы {page_num}")
             
@@ -684,10 +723,14 @@ def process_pages_sequential(extractor: TaskExtractor, storage: ResultStorage,
             
             if verbose:
                 tasks_count = len(result.get("tasks", []))
-                logger.info(f"Страница {page_num} обработана: {tasks_count} задач")
+                error = result.get("error", "")
+                if error:
+                    logger.info(f"Страница {page_num} обработана с ошибкой: {error}")
+                else:
+                    logger.info(f"Страница {page_num} обработана успешно: {tasks_count} задач")
         else:
             if verbose:
-                logger.info(f"Страница {page_num} уже обработана, пропускаем")
+                logger.info(f"Страница {page_num} уже успешно обработана, пропускаем")
     
     return results
 
@@ -762,9 +805,19 @@ def process_textbook_pure_vision_fixed(pdf_file, output_csv, force, start_page, 
         storage = ResultStorage(storage_dir)
         
         # Проверяем уже обработанные страницы
-        processed_pages = storage.get_processed_pages()
-        if processed_pages and not force:
-            logger.info(f"📋 Найдено {len(processed_pages)} уже обработанных страниц")
+        all_processed_pages = storage.get_processed_pages()
+        successful_pages = storage.get_successful_pages()
+        failed_pages = storage.get_failed_pages()
+        
+        if all_processed_pages and not force:
+            logger.info(f"📋 Найдено {len(all_processed_pages)} уже обработанных страниц")
+            logger.info(f"✅ Успешно обработано: {len(successful_pages)} страниц")
+            logger.info(f"❌ С ошибками: {len(failed_pages)} страниц")
+            
+            # Для повторной обработки используем только успешные страницы
+            processed_pages = successful_pages
+        else:
+            processed_pages = []
         
         # Обрабатываем страницы
         start_time = time.time()
