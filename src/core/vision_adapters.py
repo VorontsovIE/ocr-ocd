@@ -411,9 +411,41 @@ class GeminiAdapter(VisionAPIAdapter):
             retry_delay = None
             if "429" in error_msg:
                 import re
-                retry_match = re.search(r'retry_delay\s*\{\s*seconds:\s*(\d+)\s*\}', error_msg)
-                if retry_match:
-                    retry_delay = int(retry_match.group(1))
+                
+                # Функция для извлечения retry_delay с поддержкой различных единиц
+                def extract_retry_delay_seconds(error_text):
+                    total_seconds = 0
+                    
+                    # Проверяем секунды (точное совпадение)
+                    seconds_match = re.search(r'\bseconds:\s*(\d+)\b', error_text)
+                    if seconds_match:
+                        total_seconds += int(seconds_match.group(1))
+                    
+                    # Проверяем миллисекунды (точное совпадение)
+                    ms_match = re.search(r'\bmilliseconds:\s*(\d+)\b', error_text)
+                    if ms_match:
+                        total_seconds += int(ms_match.group(1)) // 1000
+                    
+                    # Проверяем микросекунды (точное совпадение)
+                    μs_match = re.search(r'\bmicroseconds:\s*(\d+)\b', error_text)
+                    if μs_match:
+                        total_seconds += int(μs_match.group(1)) // 1000000
+                    
+                    # Проверяем наносекунды (точное совпадение)
+                    ns_match = re.search(r'\bnanoseconds:\s*(\d+)\b', error_text)
+                    if ns_match:
+                        total_seconds += int(ns_match.group(1)) // 1000000000
+                    
+                    # Проверяем число без единиц (предполагаем секунды)
+                    if total_seconds == 0:
+                        simple_match = re.search(r'retry_delay\s*\{\s*(\d+)\s*\}', error_text)
+                        if simple_match:
+                            total_seconds = int(simple_match.group(1))
+                    
+                    return total_seconds if total_seconds > 0 else None
+                
+                retry_delay = extract_retry_delay_seconds(error_msg)
+                if retry_delay:
                     self.logger.warning(f"API рекомендует задержку {retry_delay} секунд")
             
             # Обрабатываем ошибку превышения лимита метаданных
