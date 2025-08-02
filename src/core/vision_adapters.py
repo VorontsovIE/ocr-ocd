@@ -82,6 +82,7 @@ class VisionAPIAdapter(ABC):
     def __init__(self, config: APIConfig):
         self.config = config
         self.provider = self._get_provider()
+        self.logger = get_logger(__name__)
         
     @abstractmethod
     def _get_provider(self) -> VisionProvider:
@@ -383,82 +384,109 @@ class GeminiAdapter(VisionAPIAdapter):
         ]
     
     def _make_api_call(self, request: VisionRequest) -> VisionResponse:
-        """Выполняет запрос к Gemini API"""
+        """Выполняет запрос к Gemini API с retry логикой"""
         start_time = time.time()
+        max_retries = 3
+        base_delay = 1
         
-        try:
-            response = self.model.generate_content(
-                self._build_messages(request),
-                generation_config=genai.types.GenerationConfig(
-                    max_output_tokens=request.max_tokens,
-                    temperature=request.temperature
+        for attempt in range(max_retries + 1):
+            try:
+                response = self.model.generate_content(
+                    self._build_messages(request),
+                    generation_config=genai.types.GenerationConfig(
+                        max_output_tokens=request.max_tokens,
+                        temperature=request.temperature
+                    )
                 )
-            )
-            
-            processing_time = time.time() - start_time
-            
-            return VisionResponse(
-                content=response.text,
-                model_used="gemini-2.0-flash-exp",
-                processing_time=processing_time
-            )
-            
-        except Exception as e:
-            processing_time = time.time() - start_time
-            error_msg = str(e)
-            
-            # Извлекаем retry_delay из ошибки 429
-            retry_delay = None
-            if "429" in error_msg:
-                import re
                 
-                # Функция для извлечения retry_delay с поддержкой различных единиц
-                def extract_retry_delay_seconds(error_text):
-                    total_seconds = 0
-                    
-                    # Проверяем секунды (точное совпадение)
-                    seconds_match = re.search(r'\bseconds:\s*(\d+)\b', error_text)
-                    if seconds_match:
-                        total_seconds += int(seconds_match.group(1))
-                    
-                    # Проверяем миллисекунды (точное совпадение)
-                    ms_match = re.search(r'\bmilliseconds:\s*(\d+)\b', error_text)
-                    if ms_match:
-                        total_seconds += int(ms_match.group(1)) // 1000
-                    
-                    # Проверяем микросекунды (точное совпадение)
-                    μs_match = re.search(r'\bmicroseconds:\s*(\d+)\b', error_text)
-                    if μs_match:
-                        total_seconds += int(μs_match.group(1)) // 1000000
-                    
-                    # Проверяем наносекунды (точное совпадение)
-                    ns_match = re.search(r'\bnanoseconds:\s*(\d+)\b', error_text)
-                    if ns_match:
-                        total_seconds += int(ns_match.group(1)) // 1000000000
-                    
-                    # Проверяем число без единиц (предполагаем секунды)
-                    if total_seconds == 0:
-                        simple_match = re.search(r'retry_delay\s*\{\s*(\d+)\s*\}', error_text)
-                        if simple_match:
-                            total_seconds = int(simple_match.group(1))
-                    
-                    return total_seconds if total_seconds > 0 else None
+                processing_time = time.time() - start_time
                 
-                retry_delay = extract_retry_delay_seconds(error_msg)
+                return VisionResponse(
+                    content=response.text,
+                    model_used="gemini-2.0-flash-exp",
+                    processing_time=processing_time
+                )
+                
+            except Exception as e:
+                processing_time = time.time() - start_time
+                error_msg = str(e)
+                
+                # Извлекаем retry_delay из ошибки 429
+                retry_delay = None
+                if "429" in error_msg:
+                    import re
+                    
+                    # Функция для извлечения retry_delay с поддержкой различных единиц
+                    def extract_retry_delay_seconds(error_text):
+                        total_seconds = 0
+                        
+                        # Проверяем секунды (точное совпадение)
+                        seconds_match = re.search(r'\bseconds:\s*(\d+)\b', error_text)
+                        if seconds_match:
+                            total_seconds += int(seconds_match.group(1))
+                        
+                        # Проверяем миллисекунды (точное совпадение)
+                        ms_match = re.search(r'\bmilliseconds:\s*(\d+)\b', error_text)
+                        if ms_match:
+                            total_seconds += int(ms_match.group(1)) // 1000
+                        
+                        # Проверяем микросекунды (точное совпадение)
+                        μs_match = re.search(r'\bmicroseconds:\s*(\d+)\b', error_text)
+                        if μs_match:
+                            total_seconds += int(μs_match.group(1)) // 1000000
+                        
+                        # Проверяем наносекунды (точное совпадение)
+                        ns_match = re.search(r'\bnanoseconds:\s*(\d+)\b', error_text)
+                        if ns_match:
+                            total_seconds += int(ns_match.group(1)) // 1000000000
+                        
+                        # Проверяем число без единиц (предполагаем секунды)
+                        if total_seconds == 0:
+                            simple_match = re.search(r'retry_delay\s*\{\s*(\d+)\s*\}', error_text)
+                            if simple_match:
+                                total_seconds = int(simple_match.group(1))
+                        
+                        return total_seconds if total_seconds > 0 else None
+                    
+                    retry_delay = extract_retry_delay_seconds(error_msg)
+                    if retry_delay:
+                        self.logger.warning(f"API рекомендует задержку {retry_delay} секунд")
+                
+                # Обрабатываем ошибку превышения лимита метаданных
+                if "429" in error_msg and "metadata size exceeds" in error_msg:
+                    error_msg = "Превышен лимит размера метаданных (429). Попробуйте уменьшить размер изображения или использовать разделение страниц."
+                
+                # Определяем, нужно ли повторять попытку
+                should_retry = False
+                if "429" in error_msg:
+                    should_retry = True
+                    self.logger.warning(f"Попытка {attempt + 1}/{max_retries + 1}: Rate limit (429)")
+                elif "500" in error_msg or "502" in error_msg or "503" in error_msg:
+                    should_retry = True
+                    self.logger.warning(f"Попытка {attempt + 1}/{max_retries + 1}: Server error ({error_msg[:50]}...)")
+                elif "timeout" in error_msg.lower():
+                    should_retry = True
+                    self.logger.warning(f"Попытка {attempt + 1}/{max_retries + 1}: Timeout error")
+                
+                # Если это последняя попытка или не нужно повторять
+                if attempt == max_retries or not should_retry:
+                    return VisionResponse(
+                        content="",
+                        model_used="gemini-2.0-flash-exp",
+                        processing_time=processing_time,
+                        error=error_msg,
+                        retry_delay=retry_delay
+                    )
+                
+                # Вычисляем задержку для следующей попытки
                 if retry_delay:
-                    self.logger.warning(f"API рекомендует задержку {retry_delay} секунд")
-            
-            # Обрабатываем ошибку превышения лимита метаданных
-            if "429" in error_msg and "metadata size exceeds" in error_msg:
-                error_msg = "Превышен лимит размера метаданных (429). Попробуйте уменьшить размер изображения или использовать разделение страниц."
-            
-            return VisionResponse(
-                content="",
-                model_used="gemini-2.0-flash-exp",
-                processing_time=processing_time,
-                error=error_msg,
-                retry_delay=retry_delay
-            )
+                    delay = retry_delay
+                    self.logger.info(f"Ожидание {delay} секунд (рекомендация API)")
+                else:
+                    delay = base_delay * (2 ** attempt)  # Exponential backoff
+                    self.logger.info(f"Ожидание {delay} секунд (exponential backoff)")
+                
+                time.sleep(delay)
 
 
 class ClaudeAdapter(VisionAPIAdapter):
