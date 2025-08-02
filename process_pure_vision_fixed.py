@@ -630,8 +630,7 @@ class ResultStorage:
         """Возвращает список успешно обработанных страниц (без ошибок)"""
         successful = []
         for page_num in self.get_processed_pages():
-            result = self.load_page_result(page_num)
-            if result and not result.get("error"):
+            if self.is_page_successful(page_num):
                 successful.append(page_num)
         return successful
     
@@ -639,15 +638,27 @@ class ResultStorage:
         """Возвращает список страниц с ошибками"""
         failed = []
         for page_num in self.get_processed_pages():
-            result = self.load_page_result(page_num)
-            if result and result.get("error"):
+            if not self.is_page_successful(page_num):
                 failed.append(page_num)
         return failed
     
     def is_page_successful(self, page_number: int) -> bool:
         """Проверяет, была ли страница успешно обработана"""
         result = self.load_page_result(page_number)
-        return result is not None and not result.get("error")
+        if result is None:
+            return False
+        
+        # Проверяем основную ошибку
+        if result.get("error"):
+            return False
+        
+        # Проверяем ошибки в part_results
+        part_results = result.get("part_results", [])
+        for part_result in part_results:
+            if part_result.get("error"):
+                return False
+        
+        return True
     
     def load_all_results(self) -> List[Dict[str, Any]]:
         """Загружает все результаты обработки"""
