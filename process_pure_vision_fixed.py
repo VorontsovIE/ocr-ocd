@@ -248,11 +248,17 @@ class VisionAPI:
         
         all_tasks = []
         part_results = []
+        has_errors = False
         
         for i, part_data in enumerate(image_parts):
             part_name = f"part_{i+1}"
             part_result = self._analyze_image_part(part_data, page_number, part_name, i+1)
             part_results.append(part_result)
+            
+            # Проверяем ошибки в частях
+            if part_result.get("error"):
+                has_errors = True
+                self.logger.error(f"Страница {page_number}, часть {part_name}: {part_result['error']}")
             
             if part_result.get("tasks"):
                 all_tasks.extend(part_result["tasks"])
@@ -267,6 +273,10 @@ class VisionAPI:
             "total_tasks": len(all_tasks),
             "timestamp": datetime.now().isoformat()
         }
+        
+        # Если есть ошибки в частях, добавляем общую ошибку
+        if has_errors:
+            combined_result["error"] = f"Ошибки в {len([p for p in part_results if p.get('error')])} из {len(part_results)} частей"
         
         return combined_result
     
@@ -525,7 +535,11 @@ class TaskExtractor:
             result["file_identifier"] = self.file_identifier
             result["pdf_path"] = str(self.pdf_path)
             
-            self.logger.info(f"Страница {page_number} обработана: найдено {len(result.get('tasks', []))} задач")
+            # Проверяем ошибки в результате
+            if result.get("error"):
+                self.logger.error(f"Страница {page_number}: {result['error']}")
+            else:
+                self.logger.info(f"Страница {page_number} обработана: найдено {len(result.get('tasks', []))} задач")
             
             return result
             
