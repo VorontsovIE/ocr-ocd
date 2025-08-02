@@ -73,6 +73,7 @@ class VisionResponse:
     tokens_used: Optional[int] = None
     processing_time: float = 0.0
     error: Optional[str] = None
+    retry_delay: Optional[int] = None
 
 
 class VisionAPIAdapter(ABC):
@@ -406,6 +407,15 @@ class GeminiAdapter(VisionAPIAdapter):
             processing_time = time.time() - start_time
             error_msg = str(e)
             
+            # Извлекаем retry_delay из ошибки 429
+            retry_delay = None
+            if "429" in error_msg:
+                import re
+                retry_match = re.search(r'retry_delay\s*\{\s*seconds:\s*(\d+)\s*\}', error_msg)
+                if retry_match:
+                    retry_delay = int(retry_match.group(1))
+                    self.logger.warning(f"API рекомендует задержку {retry_delay} секунд")
+            
             # Обрабатываем ошибку превышения лимита метаданных
             if "429" in error_msg and "metadata size exceeds" in error_msg:
                 error_msg = "Превышен лимит размера метаданных (429). Попробуйте уменьшить размер изображения или использовать разделение страниц."
@@ -414,7 +424,8 @@ class GeminiAdapter(VisionAPIAdapter):
                 content="",
                 model_used="gemini-2.0-flash-exp",
                 processing_time=processing_time,
-                error=error_msg
+                error=error_msg,
+                retry_delay=retry_delay
             )
 
 

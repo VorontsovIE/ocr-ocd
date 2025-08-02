@@ -249,6 +249,7 @@ class VisionAPI:
         all_tasks = []
         part_results = []
         has_errors = False
+        max_retry_delay = None
         
         for i, part_data in enumerate(image_parts):
             part_name = f"part_{i+1}"
@@ -259,6 +260,12 @@ class VisionAPI:
             if part_result.get("error"):
                 has_errors = True
                 self.logger.error(f"Страница {page_number}, часть {part_name}: {part_result['error']}")
+            
+            # Проверяем retry_delay в частях
+            if part_result.get("retry_delay"):
+                retry_delay = part_result["retry_delay"]
+                if max_retry_delay is None or retry_delay > max_retry_delay:
+                    max_retry_delay = retry_delay
             
             if part_result.get("tasks"):
                 all_tasks.extend(part_result["tasks"])
@@ -277,6 +284,10 @@ class VisionAPI:
         # Если есть ошибки в частях, добавляем общую ошибку
         if has_errors:
             combined_result["error"] = f"Ошибки в {len([p for p in part_results if p.get('error')])} из {len(part_results)} частей"
+        
+        # Передаем максимальный retry_delay из частей
+        if max_retry_delay:
+            combined_result["retry_delay"] = max_retry_delay
         
         return combined_result
     
@@ -438,6 +449,13 @@ class ParallelProcessor:
                     use_split_analysis=True, 
                     split_mode=split_mode
                 )
+                
+                # Проверяем retry_delay в результате
+                if result.get("retry_delay"):
+                    retry_delay = result["retry_delay"]
+                    self.logger.warning(f"Страница {page_number}: API рекомендует задержку {retry_delay} секунд")
+                    await asyncio.sleep(retry_delay)
+                
                 self.logger.info(f"Страница {page_number} обработана успешно")
                 return result
             except Exception as e:
